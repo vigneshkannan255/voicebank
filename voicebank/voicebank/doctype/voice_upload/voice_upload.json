@@ -1,0 +1,163 @@
+{
+ "actions": [],
+ "autoname": "prompt",
+ "creation": "2024-03-09 21:12:32.506412",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "voice_bank_section",
+  "first_name",
+  "last_name",
+  "email",
+  "phone",
+  "age",
+  "language",
+  "slang",
+  "category",
+  "gender",
+  "profile_image",
+  "voice",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "voice_bank_section",
+   "fieldtype": "Section Break",
+   "label": "Voice Upload"
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "label": "First Name",
+   "no_copy": 1,
+   "reqd": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name",
+   "no_copy": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "email",
+   "fieldtype": "Data",
+   "label": "Email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "profile_image",
+   "fieldtype": "Attach Image",
+   "label": "Profile Image"
+  },
+  {
+   "fieldname": "voice",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Voice",
+   "reqd": 1
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone",
+   "length": 10,
+   "reqd": 1
+  },
+  {
+   "fieldname": "age",
+   "fieldtype": "Int",
+   "label": "Age",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Select",
+   "label": "Gender",
+   "length": 7,
+   "options": "Male\nFemale",
+   "reqd": 1
+  },
+  {
+   "fieldname": "language",
+   "fieldtype": "Select",
+   "label": "Language",
+   "options": "Tamil\nEnglish\nMalayalam\nTelugu\nHindi\nKannada",
+   "reqd": 1
+  },
+  {
+   "default": "Kongu,Madras",
+   "fieldname": "slang",
+   "fieldtype": "Data",
+   "label": "Slang",
+   "reqd": 1
+  },
+  {
+   "default": "Movie, Serial, Animation",
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category",
+   "reqd": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Voice Upload",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "make_attachments_public": 1,
+ "max_attachments": 5,
+ "modified": "2024-03-11 08:58:52.575522",
+ "modified_by": "Administrator",
+ "module": "Voicebank",
+ "name": "Voice Upload",
+ "naming_rule": "Set by user",
+ "nsm_parent_field": "parent_voicebank",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "select": 1,
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}
