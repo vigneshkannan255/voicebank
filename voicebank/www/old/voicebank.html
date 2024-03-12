@@ -7,17 +7,15 @@
 <title>Dubbing Artist Information</title>
 <link rel="stylesheet" href="voice.css">
 <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
-{% extends "templates/web.html" %}
-</head>
-<body>
 <script>
 frappe.ready(function() {
 	$('.btn-more').on('click', function() {
 		frappe.call({
-			method: 'voicebank.www.voicebank.search',
+			method: 'voicebank.www.searchvoice.search',
 			args: {
-				query: '{{ query }}',
-				category: '{{ category }}'
+				text: '{{ query }}',
+				start: $('.search-result-item').length,
+				as_html: 1
 			},
 			callback: function(r) {
 				$(r.message.results).appendTo('.search-result');
@@ -27,36 +25,23 @@ frappe.ready(function() {
 	});
 });
 </script>
+{% extends "templates/web.html" %}
+</head>
+<body>
 {% block content %}
-<div class="search-result">
-	{% include "voicebank/templates/includes/search_result.html" %}
-</div>
-
 <center>
 	<h2>Search Voice Artist</h2>
-<div class="row mb-12">
-	<div class="col-sm-6">
-		<form action="{{ route }}">
-			<div class="input-group">
-				<select name="category" id="category">
-				<option value="language">Language</option>
-				<option value="gender">Gender</option>
-				<select>
-				<input name="query" class="form-control" type="text" value="{{ query or '' }}"
-					placeholder="{{ _('Search...') }}">
-				<div class="input-group-append">
-					<button type="submit" class="btn btn-sm btn-primary btn-search">
-						{{ _('Search') }}
-					</button>
-				</div>
-			</div>
-			{% if frappe.form_dict.scope %}
-				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
-			{% endif %}
-		</form>
-	</div>
+<div>
+	<form method="post">
+	<select name="category" id="category">
+	<option value="language">Language</option>
+	<option value="gender">Gender</option>
+	<select>
+	<input type="text" name="query" id="query" placeholder="Search...">
+	<button>Submit</button>
+	</form>
 </div>
-</center>
+<center>
 <div class="content">
 <center><h2>Voice Bank</h2></center>
 <div class="container">

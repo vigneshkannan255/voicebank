@@ -1,3 +1,4 @@
+#from .jinja import jenvs 
 app_name = "voicebank"
 app_title = "Voicebank"
 app_publisher = "VGLUG"

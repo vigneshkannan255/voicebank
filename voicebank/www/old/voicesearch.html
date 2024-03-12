@@ -1,0 +1,26 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+
+{% include "templates/includes/searchtemplate.html" %}
+
+<script>
+frappe.ready(function() {
+	$('.btn-more').on('click', function() {
+		frappe.call({
+			method: 'voicebank.www.voicebank.search',
+			args: {
+				query: '{{ query }}',
+				category: '{{ category }}',
+				as_html: 1
+			},
+			callback: function(r) {
+				$(r.message.results).appendTo('.search-result');
+				$('.btn-more').toggleClass('hidden', !!!r.message.has_more);
+			}
+		});
+	});
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,25 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+
+{% include "voicebank/templates/includes/search_template.html" %}
+<script>
+frappe.ready(function() {
+	$('.btn-more').on('click', function() {
+		frappe.call({
+			method: 'voicebank.www.searchvoice.get_context',
+			args: {
+				query: '{{ query }}',
+				category: '{{ category }}'
+				start: $('.search-result-item').length,
+				as_html: 1
+			},
+			callback: function(r) {
+				$(r.message.results).appendTo('.search-result');
+				$('.btn-more').toggleClass('hidden', !!!r.message.has_more);
+			}
+		});
+	});
+});
+</script>
+{% endblock %}
