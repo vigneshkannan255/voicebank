@@ -29,7 +29,11 @@ frappe.ready(function() {
 </script>
 {% endblock %}
 {% block content %}
-<center><h2>Search Voice Artist</h2></center>
+<div class="search-result">
+	{% include "voicebank/templates/includes/search_result.html" %}
+</div>
+<center>
+	<h2>Search Voice Artist</h2>
 <div class="row mb-12">
 	<div class="col-sm-6">
 		<form action="{{ route }}">
@@ -52,9 +56,29 @@ frappe.ready(function() {
 		</form>
 	</div>
 </div>
-<div class="search-result">
-	{% include "voicebank/templates/includes/search_result.html" %}
-</div>
+
+</center>
+<div class="content">
+<center><h2>Voice Bank</h2></center>
+<div class="container">
+{% for data in data_list %}
+	<div class="artist">
+        <img src={{data['profile_image']}} alt="Dubbing Artist" width="100" height="100">
+        <div class="artist-info">
+            <h2>Name: {{data['first_name']}} {{data['last_name']}}</h2>
+            <p><span>Gender:</span> {{data['gender']}}</p>
+            <p><span>Category:</span> {{data['category']}}</p>
+            <p><span>Language:</span> {{data['language']}}</p>
+	    <p><span>Slang:</span> {{data['slang']}}</p>
+	    <div>
+            <audio controls>
+  	    <source src={{data['voice']}} type="audio/mpeg">
+	    </audio>
+	    </div>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}
+</div>
 </body>
 </html>

@@ -1,6 +1,20 @@
-{% extends "voicebank/www/voicebank.html" %}
+<div class="content">
+<center><h2>Search Results</h2></center>
 <div class="container">
-    <ul>
-	{{ results }}
-    </ul>
-</div>
+{% for data in results %}
+	<div class="artist">
+        <img src={{data['profile_image']}} alt="Dubbing Artist" width="100" height="100">
+        <div class="artist-info">
+            <h2>Name: {{data['first_name']}} {{data['last_name']}}</h2>
+            <p><span>Gender:</span> {{data['gender']}}</p>
+            <p><span>Category:</span> {{data['category']}}</p>
+            <p><span>Language:</span> {{data['language']}}</p>
+	    <p><span>Slang:</span> {{data['slang']}}</p>
+	    <div>
+            <audio controls>
+  	    <source src={{data['voice']}} type="audio/mpeg">
+	    </audio>
+	    </div>
+        </div>
+    </div>
+{% endfor %}

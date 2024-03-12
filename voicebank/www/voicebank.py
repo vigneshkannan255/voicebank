@@ -18,11 +18,11 @@ def get_context(context):
 @frappe.whitelist(allow_guest=True)
 def search(query, category, scope=None):
     if category == "language":
-        results = frappe.get_all("Voice Upload", filters={"language": ["like", f"%{query}%"]},
-                                   fields=["first_name", "last_name"])
+        results = frappe.get_list("Voice Upload", filters={"language": ["like", f"%{query}%"]},
+                                   fields=["first_name","last_name","profile_image", "voice", "language", "slang","gender"])
     elif category == "gender":
         results = frappe.get_all("Voice Upload", filters={"gender": query},
-                                   fields=["first_name", "last_name", "profile_image", "voice", "language", "slang"])
+                                   fields=["first_name", "last_name", "profile_image", "voice", "language", "slang","gender"])
     else:
         results = []
-    return results
+    return {"results" : results}
