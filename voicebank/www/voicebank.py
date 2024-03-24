@@ -19,10 +19,13 @@ def get_context(context):
 def search(query, category, scope=None):
     if category == "language":
         results = frappe.get_list("Voice Upload", filters={"language": ["like", f"%{query}%"]},
-                                   fields=["first_name","last_name","profile_image", "voice", "language", "slang","gender"])
+                                   fields=["first_name","last_name","profile_image", "voice", "language", "slang","gender","category"])
     elif category == "gender":
         results = frappe.get_all("Voice Upload", filters={"gender": query},
-                                   fields=["first_name", "last_name", "profile_image", "voice", "language", "slang","gender"])
+                                   fields=["first_name", "last_name", "profile_image", "voice", "language", "slang","gender","category"])
+    elif category == "slang":
+        results = frappe.get_all("Voice Upload", filters={"slang": ["like", f"%{query}%"]}, 
+                                   fields=["first_name","last_name","profile_image","voice","language","slang","gender","category"])
     else:
         results = []
     return {"results" : results}

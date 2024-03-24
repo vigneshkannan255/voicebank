@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dubbing Artist Information</title>
 <link rel="stylesheet" href="voice.css">
+<title>Dubbing Artist Information</title>
 {% extends "templates/web.html" %}
 </head>
 <body>
-{% block page_content %}
 <script>
 frappe.ready(function() {
 	$('.btn-more').on('click', function() {
@@ -27,32 +26,24 @@ frappe.ready(function() {
 	});
 });
 </script>
-{% endblock %}
 {% block content %}
-<center><h2>Search Voice Artist</h2></center>
-<div class="row mb-12">
-	<div class="col-sm-6">
-		<form action="{{ route }}">
-			<div class="input-group">
+<center>
+<h2>Search Voice Artist</h2>
+		<form action="">
 				<select name="category" id="category">
 				<option value="language">Language</option>
 				<option value="gender">Gender</option>
+				<option value="slang">Slang</option>
 				<select>
-				<input name="query" class="form-control" type="text" value="{{ query or '' }}"
-					placeholder="{{ _('Search...') }}">
-				<div class="input-group-append">
-					<button type="submit" class="btn btn-sm btn-primary btn-search">
-						{{ _('Search') }}
-					</button>
-				</div>
-			</div>
+				<input name="query" class="search-input" type="text" value="{{ query or '' }}"placeholder="{{ _('Search...') }}">
+				<button type="submit" class="btn btn-sm btn-primary btn-search"> {{ _('Search') }} </button>
 			{% if frappe.form_dict.scope %}
 				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
 			{% endif %}
 		</form>
-	</div>
-</div>
-<div class="search-result">
+</center>
+<div clas
+s="search-result">
 	{% include "voicebank/templates/includes/search_result.html" %}
 </div>
 {% endblock %}
