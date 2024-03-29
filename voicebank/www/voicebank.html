@@ -10,13 +10,20 @@
 </head>
 <body>
 <script>
+var selectElement = document.getElementById("age");
+var selectedOption = selectElement.options[selectElement.selectedIndex];
+var values = selectedOption.value.split(",");
+var min_age = parseInt(values[0]);
+var max_age= parseInt(values[1]);
 frappe.ready(function() {
 	$('.btn-more').on('click', function() {
 		frappe.call({
 			method: 'voicebank.www.voicebank.search',
 			args: {
-				query: '{{ query }}',
-				category: '{{ category }}'
+				language: '{{ language }}',
+				gender: '{{ gender }}',
+				slang: '{{ slang }}'
+				age: '{{ age }}'
 			},
 			callback: function(r) {
 				$(r.message.results).appendTo('.search-result');
@@ -30,12 +37,40 @@ frappe.ready(function() {
 <center>
 <h2>Search Voice Artist</h2>
 		<form action="">
-				<select name="category" id="category">
-				<option value="language">Language</option>
-				<option value="gender">Gender</option>
-				<option value="slang">Slang</option>
-				<select>
-				<input name="query" class="search-input" type="text" value="{{ query or '' }}"placeholder="{{ _('Search...') }}">
+				<select name="language" id="language">
+                                <option value="tamil">Tamil</option>
+                                <option value="english">English</option>
+                                <option value="Malayalam">Malayalam</option>
+				<option value="hindi">Hindi</option>
+				<option value="telugu">Telugu</option>
+                                </select>
+
+				<select name="gender" id="gender">
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                                </select>
+				
+				<select name="slang" id="slang">
+                                <option value="madurai">Madurai</option>
+                                <option value="chennai">Chennai</option>
+				<option value="general">General</option>
+                                </select>
+				
+			 	<select name="age" id="age">
+                                <option value="r1">5-10</option>
+                                <option value="r2">10-15</option>
+				<option value="r3">15-20</option>
+				<option value="r4">20-25</option>
+				<option value="r5">25-30</option>
+				<option value="r6">30-35</option>
+				<option value="r7">35-40</option>
+				<option value="r8">40-45</option>
+				<option value="r9">45-50</option>
+                                </select> 
+				
+				
+
+				
 				<button type="submit" class="btn btn-sm btn-primary btn-search"> {{ _('Search') }} </button>
 			{% if frappe.form_dict.scope %}
 				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
