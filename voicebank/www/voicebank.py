@@ -4,7 +4,7 @@ from frappe.utils import sanitize_html
 
 def get_context(context):
     context.no_cache = 1
-    if frappe.form_dict.language and frappe.form_dict.gender:
+    if frappe.form_dict.language or frappe.form_dict.gender or frappe.form_dict.age or frappe.form_dict.slang:
         language = sanitize_html(frappe.form_dict.get('language'))
         gender = sanitize_html(frappe.form_dict.get('gender'))
         age = sanitize_html(frappe.form_dict.get('age'))
@@ -19,6 +19,9 @@ def get_context(context):
 
 @frappe.whitelist(allow_guest=True)
 def search(language, gender, slang, age, scope=None):
+    # default min and max age
+    min_age = 0
+    max_age = 50
     if age == "r1":
         min_age = 5
         max_age = 10
@@ -46,11 +49,20 @@ def search(language, gender, slang, age, scope=None):
     elif age == "r9":
         min_age = 45
         max_age = 50
-    filters = {
-    "language": language,
-    "gender": gender,
-    "age":['<', max_age]
+    else:
+        age = ""
+
+    age = ['<', max_age]
+
+    filters_org = {
+        "language": language,
+        "gender": gender,
+        "age": age,
+        "slang": slang
     }
+
+    filters = { k: v for k, v in filters_org.items() if v }
+
     results = frappe.get_list("Voice Upload", filters=filters,
                                    fields=["first_name","last_name","profile_image", "voice", "language", "slang","gender","category"])
     return {"results" : results}
