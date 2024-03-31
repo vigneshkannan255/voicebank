@@ -5,52 +5,16 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "voice_bank_section",
-  "first_name",
-  "last_name",
-  "email",
-  "phone",
-  "age",
+  "member_id",
   "language",
   "slang",
   "category",
-  "gender",
-  "profile_image",
   "voice",
+  "voice_image",
+  "timestamp",
   "amended_from"
  ],
  "fields": [
-  {
-   "fieldname": "voice_bank_section",
-   "fieldtype": "Section Break",
-   "label": "Voice Upload"
-  },
-  {
-   "fieldname": "first_name",
-   "fieldtype": "Data",
-   "label": "First Name",
-   "no_copy": 1,
-   "reqd": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "last_name",
-   "fieldtype": "Data",
-   "label": "Last Name",
-   "no_copy": 1,
-   "reqd": 1
-  },
-  {
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "Email",
-   "reqd": 1
-  },
-  {
-   "fieldname": "profile_image",
-   "fieldtype": "Attach Image",
-   "label": "Profile Image"
-  },
   {
    "fieldname": "voice",
    "fieldtype": "Attach",
@@ -59,45 +23,17 @@
    "reqd": 1
   },
   {
-   "fieldname": "phone",
-   "fieldtype": "Data",
-   "label": "Phone",
-   "length": 10,
-   "reqd": 1
-  },
-  {
-   "fieldname": "age",
-   "fieldtype": "Int",
-   "label": "Age",
-   "reqd": 1
-  },
-  {
-   "fieldname": "gender",
-   "fieldtype": "Select",
-   "label": "Gender",
-   "length": 7,
-   "options": "Male\nFemale",
-   "reqd": 1
-  },
-  {
    "fieldname": "language",
    "fieldtype": "Select",
    "label": "Language",
-   "options": "Tamil\nEnglish\nMalayalam\nTelugu\nHindi\nKannada",
+   "options": "Tamil\nTelugu\nKannada\nMalayalam\nHindi",
    "reqd": 1
   },
   {
-   "default": "Kongu,Madras",
    "fieldname": "slang",
-   "fieldtype": "Data",
+   "fieldtype": "Select",
    "label": "Slang",
-   "reqd": 1
-  },
-  {
-   "default": "Movie, Serial, Animation",
-   "fieldname": "category",
-   "fieldtype": "Data",
-   "label": "Category",
+   "options": "General\nMadras\nMadurai\nCoimbatore",
    "reqd": 1
   },
   {
@@ -105,10 +41,35 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Voice Upload",
+   "options": "Artist Profile",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "member_id",
+   "fieldtype": "Link",
+   "label": "Member ID",
+   "options": "Artist Profile",
+   "reqd": 1
+  },
+  {
+   "fieldname": "voice_image",
+   "fieldtype": "Attach Image",
+   "label": "Voice Image",
+   "reqd": 1
+  },
+  {
+   "fieldname": "timestamp",
+   "fieldtype": "Datetime",
+   "label": "Timestamp",
+   "reqd": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category",
+   "options": "Movie"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -116,7 +77,7 @@
  "links": [],
  "make_attachments_public": 1,
  "max_attachments": 5,
- "modified": "2024-03-11 08:58:52.575522",
+ "modified": "2024-03-31 13:29:37.086747",
  "modified_by": "Administrator",
  "module": "Voicebank",
  "name": "Voice Upload",
