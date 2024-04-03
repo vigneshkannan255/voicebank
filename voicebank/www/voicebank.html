@@ -80,6 +80,44 @@ frappe.ready(function() {
 				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
 			{% endif %}
 		</form>
+    <h2>Enquiry Form</h2>
+
+    <!-- Button to open the popup -->
+    <button onclick="openPopup()">Open Enquiry Form</button>
+
+    <!-- The popup form -->
+    <div id="enquiryPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <h3>Enquiry Form</h3>
+            <form action="/submit_enquiry" method="post">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <label for="message">Message:</label><br>
+                <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the popup
+        function openPopup() {
+            document.getElementById("enquiryPopup").style.display = "block";
+        }
+
+        // Function to close the popup
+        function closePopup() {
+            document.getElementById("enquiryPopup").style.display = "none";
+        }
+    </script>
+
+
 </center>
 <div clas
 s="search-result">
