@@ -1,10 +1,16 @@
 <div class="content">
+{% if results %}i
+	<div class="container">
+	<button type="submit" class="btn btn-sm btn-primary btn-search btn-cener"> {{ _('Enquery') }} </button>
+        </div>
 <div class="container">
 {% for data in results %}
 	<div class="artist">
-        <img src={{data['profile_image']}} alt="Dubbing Artist" width="100" height="100">
+        <img src={{data['voice_image']}} alt="Dubbing Artist" width="100" height="100">
         <div class="artist-info">
-	    <h2>Name: {{data['first_name']}} {{data['last_name']}} <input type="checkbox" id="" name="" value="" style="float:right;transform:scale(1.5);margin:10px"> </h2>
+		<h2>Name: {{data['first_name']}} {{data['last_name']}} 
+			<input type="checkbox" name="voice_{{ loop.index }}" value="{{data['member_id']}}" style="float:right;transform:scale(1.5);margin:10px"> 
+		</h2>
             <p><span>Gender:</span> {{data['gender']}}</p>
             <p><span>Category:</span> {{data['category']}}</p>
             <p><span>Language:</span> {{data['language']}}</p>
@@ -17,5 +23,6 @@
         </div>
     </div>
 {% endfor %}
+{% endif %}
 </div>
 </div>

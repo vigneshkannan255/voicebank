@@ -114,3 +114,9 @@
             text-decoration: none;
             cursor: pointer;
         }
+    
+    .btn-cener {
+	  left: 50%;
+	  position: absolute;
+	  transform: translate(0, -50%);
+    }
