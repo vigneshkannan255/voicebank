@@ -4,11 +4,14 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="voice.css">
+<link rel="stylesheet" href="output.css">
 <title>Dubbing Artist Information</title>
 {% extends "templates/web.html" %}
 </head>
-<body>
+
+<body class="bg-SpringWood !important">
+
+
 <script>
 var selectElement = document.getElementById("age");
 var selectedOption = selectElement.options[selectElement.selectedIndex];
@@ -34,91 +37,147 @@ frappe.ready(function() {
 });
 </script>
 {% block content %}
+
+<div class="bg-GreenishBlue text-black p-5 rounded-lg m-2 flex items-center justify-between ">
+    <div class="cursor-pointer">
+        <a class="text-2xl font-bold text-white font-serif hover:text-black">Home</a>
+    </div>
+
+    <div class="cursor-pointer " >
+        <a  class="text-xl font-bold text-white font-serif hover:text-black">Find Voice|</a>
+        <a  class="text-xl font-bold text-white font-serif hover:text-black">About|</a>
+        <a  class="text-xl font-bold text-white font-serif hover:text-black">Contac US</a>
+    </div>
+    
+</div>
+
 <center>
-<h2>Search Voice Artist</h2>
-		<form action="">
-				<select name="language" id="language">
-                                <option value="">Select Language</option>
-                                <option value="tamil">Tamil</option>
-                                <option value="english">English</option>
-                                <option value="Malayalam">Malayalam</option>
+    <div class="text-6xl text-GreenishBlue font-serif mt-8">
+        <center>
+        <h1>Search Voice Artist</h1>
+        </center>
+    </div>
+    <center>
+        <form action="">
+        <div class="mt-10  space-x-3">
+            <select name="language" id="language" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-32">
+                <option value="">Select Language</option>
+                <option value="tamil">Tamil</option>
+                <option value="english">English</option>
+                <option value="Malayalam">Malayalam</option>
 				<option value="hindi">Hindi</option>
 				<option value="telugu">Telugu</option>
-                                </select>
+            </select>
 
-				<select name="gender" id="gender">
-                                <option value="">Select Gender</option>
-                                <option value="female">Female</option>
-                                <option value="male">Male</option>
-                                </select>
-				
-				<select name="slang" id="slang">
-                                <option value="">Select Slang</option>
-                                <option value="madurai">Madurai</option>
-                                <option value="Madras">Madras</option>
+            <select name="gender" id="gender" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-32">
+                <option value="">Select Gender</option>
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+                </select>
+
+            <select name="slang" id="slang" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-32">
+                <option value="">Select Slang</option>
+                <option value="madurai">Madurai</option>
+                <option value="Madras">Madras</option>
 				<option value="general">General</option>
-                                </select>
+            </select>
 				
-			 	<select name="age" id="age">
-                                <option value="">Select Age</option>
-                                <option value="r1">5-10</option>
-                                <option value="r2">10-15</option>
-				<option value="r3">15-20</option>
-				<option value="r4">20-25</option>
-				<option value="r5">25-30</option>
-				<option value="r6">30-35</option>
-				<option value="r7">35-40</option>
-				<option value="r8">40-45</option>
-				<option value="r9">45-50</option>
-                                </select> 
-				
-				
+            <select name="age" id="age" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-32">
+                <option value="">Select Age</option>
+                <option value="r1">5-10</option>
+                <option value="r2">10-15</option>
+                <option value="r3">15-20</option>
+                <option value="r4">20-25</option>
+                <option value="r5">25-30</option>
+                <option value="r6">30-35</option>
+                <option value="r7">35-40</option>
+                <option value="r8">40-45</option>
+                <option value="r9">45-50</option>
+                </select> 
 
-				
-				<button type="submit" class="btn btn-sm btn-primary btn-search"> {{ _('Search') }} </button>
+            
+
+
+                <button type="submit" class=" btn-search bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full space-x-1 h-8 w-24">{{ _('Search') }}</button>
+           
+            
 			{% if frappe.form_dict.scope %}
 				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
 			{% endif %}
-		</form>
-    <h2>Enquiry Form</h2>
+        </form>
 
     <!-- Button to open the popup -->
-    <button onclick="openPopup()">Open Enquiry Form</button>
+    <button type="button"  id="openModalButton" class="bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full h-8 w-24"> Enquiry</button>
 
-    <!-- The popup form -->
-    <div id="enquiryPopup" class="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closePopup()">&times;</span>
-            <h3>Enquiry Form</h3>
-            <form action="/submit_enquiry" method="post">
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name" required><br><br>
-
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" required><br><br>
-
-                <label for="message">Message:</label><br>
-                <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
-
-                <input type="submit" value="Submit">
+        <div id="myModal" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-SpringWood p-8 rounded-lg shadow-lg z-50 border-4 border-GreenishBlue " style="width: calc(100% - 950px); height: calc(100vh - 320px)">
+            <span id="closeButton" class="absolute top-0 right-3 cursor-pointer text-gray-600 text-xl">&times;</span>
+            <div class="flex justify-center">
+                <form class="flex flex-col ">
+                    <div class="flex items-center mt-5">
+                        <label for="name" class="block text-2xl font-bold text-black font-serif pr-3 mr-36">Name:</label>
+                        <input type="text" id="name" placeholder="Enter Your Name" class=" text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+                    
+                    </div>
+                    <div class="flex items-center mt-5">
+                        <label for="E-Mail" class="block text-2xl font-bold text-black font-serif pr-2 mr-36">E-Mail:</label>
+                        <input type="text" id="mail" placeholder="Enter Your E-Mail" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+                    </div>
+                    <div class="flex items-center mt-5">
+                        <label for="Company" class="block text-2xl font-bold text-black font-serif pr-3 mr-28">Phone Number:</label>
+                        <input type="text" id="phone" placeholder="Enter Your Phone number" class="  text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+                    </div>
+                    
+                    <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
+                <div class="text-center ">
+                    <button type="submit" class="bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
+                </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Function to open the popup
-        function openPopup() {
-            document.getElementById("enquiryPopup").style.display = "block";
+	function removeDuplicates(arr) {
+	    return [...new Set(arr)];
         }
+        const openModalButton = document.getElementById('openModalButton');
+	const selected_profiles = document.getElementsByClassName("selected_profile")
+        const modal = document.getElementById('myModal');
+        const overlay = document.getElementById('overlay');
+        const closeButton = document.getElementById('closeButton');
 
-        // Function to close the popup
-        function closePopup() {
-            document.getElementById("enquiryPopup").style.display = "none";
-        }
-    </script>
+        openModalButton.addEventListener('click', () => {
+	      
+            const profile_list = [];
+            for(profile of selected_profiles) {
+		if (profile.checked) {
+      		    if (profile.value) {
+	                profile_list.push(profile.value);
+		    }
+	        }
+	    }
+            p_list = removeDuplicates(profile_list);
+	    console.log(p_list.toString());
+	    document.getElementById("artist_member_id_list").value = p_list.toString(); 
 
+            modal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
+        });
 
+        closeButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+
+        overlay.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+    </script>      
+    </div>
+    </center>
 </center>
+
+
 <div clas
 s="search-result">
 <form>
