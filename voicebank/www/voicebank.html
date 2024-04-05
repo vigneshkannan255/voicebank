@@ -13,11 +13,6 @@
 
 
 <script>
-var selectElement = document.getElementById("age");
-var selectedOption = selectElement.options[selectElement.selectedIndex];
-var values = selectedOption.value.split(",");
-var min_age = parseInt(values[0]);
-var max_age= parseInt(values[1]);
 frappe.ready(function() {
 	$('.btn-more').on('click', function() {
 		frappe.call({
