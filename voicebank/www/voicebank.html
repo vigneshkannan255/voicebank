@@ -15,7 +15,7 @@
 
 <script>
 frappe.ready(function() {
-	$('.btn-more').on('click', function() {
+	$('.btn-search').on('click', function() {
 		frappe.call({
 			method: 'voicebank.www.voicebank.search',
 			args: {
@@ -27,6 +27,22 @@ frappe.ready(function() {
 			callback: function(r) {
 				$(r.message.results).appendTo('.search-result');
 				$('.btn-more').toggleClass('hidden', !!!r.message.has_more);
+			}
+		});
+	});
+	$('#btn-enquery').on('click', function() {
+			console.log("Test Test");
+		frappe.call({
+			method: 'voicebank.www.enquery.search',
+			args: {
+				name: '{{ name }}',
+				email_id: '{{ email_id }}',
+				phone_number: '{{ phone_number }}',
+				member_id_list: '{{ member_id_list }}'
+			},
+			callback: function(r) {
+				$(r.message.results).appendTo('.enquery-response');
+				$('.btn-enquery').toggleClass('hidden', !!!r.message.has_more);
 			}
 		});
 	});
@@ -121,7 +137,7 @@ frappe.ready(function() {
                     
                     <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
                 <div class="text-center ">
-                    <button type="submit" class="bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
+                    <button type="submit" id="btn-enquery" class="bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
                 </div>
             </form>
             </div>
