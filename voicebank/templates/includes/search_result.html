@@ -2,7 +2,7 @@
     {% if results %}
     <div class="container text-center flex flex-wrap justify-center"> 
     {% for data in results %}
-    <div class="artist bg-black h-96 w-96 pb-5 rounded-3xl overflow-hidden shadow-md mx-2 mb-4 flex flex-col justify-between">
+    <div class="artist bg-white mt-14 h-96 w-96 pb-5 rounded-3xl overflow-hidden shadow-md mx-2 mb-4 flex flex-col justify-between">
 		<div class="">
 			<input class="selected_profile" type="checkbox" name="voice_{{ loop.index }}" value="{{data['member_id']}}" style="float:right;margin:10px">
 		</div>

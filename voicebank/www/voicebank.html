@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="output.css">
 <title>Dubbing Artist Information</title>
 {% extends "templates/web.html" %}
+
 </head>
 
 <body class="bg-SpringWood !important">
@@ -89,14 +90,9 @@ frappe.ready(function() {
                 <option value="r8">40-45</option>
                 <option value="r9">45-50</option>
                 </select> 
-
-            
-
-
+                
                 <button type="submit" class=" btn-search bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full space-x-1 h-8 w-24">{{ _('Search') }}</button>
-           
-            
-			{% if frappe.form_dict.scope %}
+           {% if frappe.form_dict.scope %}
 				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
 			{% endif %}
         </form>
@@ -104,7 +100,8 @@ frappe.ready(function() {
     <!-- Button to open the popup -->
     <button type="button"  id="openModalButton" class="bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full h-8 w-24"> Enquiry</button>
 
-        <div id="myModal" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-SpringWood p-8 rounded-lg shadow-lg z-50 border-4 border-GreenishBlue " style="width: calc(100% - 950px); height: calc(100vh - 320px)">
+        <div id="myModal" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-SpringWood p-8 rounded-lg shadow-lg z-50 border-4 border-GreenishBlue " style="width:auto; height:auto">
+            <div class="w-auto h-auto">
             <span id="closeButton" class="absolute top-0 right-3 cursor-pointer text-gray-600 text-xl">&times;</span>
             <div class="flex justify-center">
                 <form class="flex flex-col ">
@@ -118,7 +115,7 @@ frappe.ready(function() {
                         <input type="text" id="mail" placeholder="Enter Your E-Mail" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
                     </div>
                     <div class="flex items-center mt-5">
-                        <label for="Company" class="block text-2xl font-bold text-black font-serif pr-3 mr-28">Phone Number:</label>
+                        <label for="Pone_number" class="block text-2xl font-bold text-black font-serif pr-3 mr-11">Phone Number:</label>
                         <input type="text" id="phone" placeholder="Enter Your Phone number" class="  text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
                     </div>
                     
@@ -127,6 +124,7 @@ frappe.ready(function() {
                     <button type="submit" class="bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 
@@ -135,7 +133,7 @@ frappe.ready(function() {
 	    return [...new Set(arr)];
         }
         const openModalButton = document.getElementById('openModalButton');
-	const selected_profiles = document.getElementsByClassName("selected_profile")
+	    const selected_profiles = document.getElementsByClassName("selected_profile")
         const modal = document.getElementById('myModal');
         const overlay = document.getElementById('overlay');
         const closeButton = document.getElementById('closeButton');
