@@ -30,23 +30,8 @@ frappe.ready(function() {
 			}
 		});
 	});
-	$('#btn-enquery').on('click', function() {
-			console.log("Test Test");
-		frappe.call({
-			method: 'voicebank.www.enquery.search',
-			args: {
-				name: '{{ name }}',
-				email_id: '{{ email_id }}',
-				phone_number: '{{ phone_number }}',
-				member_id_list: '{{ member_id_list }}'
-			},
-			callback: function(r) {
-				$(r.message.results).appendTo('.enquery-response');
-				$('.btn-enquery').toggleClass('hidden', !!!r.message.has_more);
-			}
-		});
-	});
 });
+
 </script>
 {% block content %}
 
@@ -123,23 +108,23 @@ frappe.ready(function() {
                 <form class="flex flex-col ">
                     <div class="flex items-center mt-5">
                         <label for="name" class="block text-2xl font-bold text-black font-serif pr-3 mr-36">Name:</label>
-                        <input type="text" id="name" placeholder="Enter Your Name" class=" text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+                        <input type="text" id="cust_name" name="cust_name" placeholder="Enter Your Name" class=" text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
                     
                     </div>
                     <div class="flex items-center mt-5">
                         <label for="E-Mail" class="block text-2xl font-bold text-black font-serif pr-2 mr-36">E-Mail:</label>
-                        <input type="text" id="mail" placeholder="Enter Your E-Mail" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+                        <input type="text" id="email_id" name="email_id" placeholder="Enter Your E-Mail" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
                     </div>
                     <div class="flex items-center mt-5">
                         <label for="Pone_number" class="block text-2xl font-bold text-black font-serif pr-3 mr-11">Phone Number:</label>
-                        <input type="text" id="phone" placeholder="Enter Your Phone number" class="  text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+                        <input type="text" id="phone_number" name="phone_number" placeholder="Enter Your Phone number" class="  text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
                     </div>
                     
                     <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
-                <div class="text-center ">
-                    <button type="submit" id="btn-enquery" class="bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
-                </div>
-            </form>
+                    <div class="text-center ">
+                        <button type="button" id="btn-enquery" class="btn-enquery bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -149,13 +134,13 @@ frappe.ready(function() {
 	    return [...new Set(arr)];
         }
         const openModalButton = document.getElementById('openModalButton');
-	    const selected_profiles = document.getElementsByClassName("selected_profile")
+        const selected_profiles = document.getElementsByClassName("selected_profile")
         const modal = document.getElementById('myModal');
         const overlay = document.getElementById('overlay');
         const closeButton = document.getElementById('closeButton');
+        const submitButton = document.getElementById('btn-enquery');
 
         openModalButton.addEventListener('click', () => {
-	      
             const profile_list = [];
             for(profile of selected_profiles) {
 		if (profile.checked) {
@@ -171,6 +156,24 @@ frappe.ready(function() {
             modal.classList.remove('hidden');
             overlay.classList.remove('hidden');
         });
+        
+	submitButton.addEventListener('click', () => {
+            frappe.call({
+                method: 'voicebank.www.enquery.search',
+                args: {
+                    cust_name: document.getElementById('cust_name').value,
+                    email_id: document.getElementById('email_id').value,
+                    phone_number: document.getElementById('phone_number').value,
+                    member_id_list: document.getElementById('artist_member_id_list').value
+                },
+                callback: function(r) {
+                    $(r.message.results).appendTo('.enquery-response');
+                    $('.btn-enquery').toggleClass('hidden', !!!r.message.has_more);
+                }
+            });
+            modal.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
 
         closeButton.addEventListener('click', () => {
             modal.classList.add('hidden');
@@ -181,6 +184,7 @@ frappe.ready(function() {
             modal.classList.add('hidden');
             overlay.classList.add('hidden');
         });
+	
     </script>      
     </div>
     </center>
