@@ -7,31 +7,26 @@
 <link rel="stylesheet" href="output.css">
 <title>Dubbing Artist Information</title>
 {% extends "templates/web.html" %}
-
 </head>
-
 <body class="bg-SpringWood !important">
-
-
 <script>
 frappe.ready(function() {
-	$('.btn-search').on('click', function() {
-		frappe.call({
-			method: 'voicebank.www.voicebank.search',
-			args: {
-				language: '{{ language }}',
-				gender: '{{ gender }}',
-				slang: '{{ slang }}',
-				age: '{{ age }}'
-			},
-			callback: function(r) {
-				$(r.message.results).appendTo('.search-result');
-				$('.btn-more').toggleClass('hidden', !!!r.message.has_more);
-			}
-		});
-	});
+    $('.btn-search').on('click', function() {
+        frappe.call({
+            method: 'voicebank.www.voicebank.search',
+            args: {
+                language: '{{ language }}',
+                gender: '{{ gender }}',
+                slang: '{{ slang }}',
+                age: '{{ age }}'
+            },
+            callback: function(r) {
+                $(r.message.results).appendTo('.search-result');
+                $('.btn-more').toggleClass('hidden', !!!r.message.has_more);
+            }
+        });
+    });
 });
-
 </script>
 {% block content %}
 
@@ -44,10 +39,8 @@ frappe.ready(function() {
         <a  class="text-xl font-bold text-white font-serif hover:text-black">Find Voice|</a>
         <a  class="text-xl font-bold text-white font-serif hover:text-black">About|</a>
         <a  class="text-xl font-bold text-white font-serif hover:text-black">Contac US</a>
-    </div>
-    
+    </div>   
 </div>
-
 <center>
     <div class="text-6xl text-GreenishBlue font-serif mt-8">
         <center>
@@ -55,15 +48,15 @@ frappe.ready(function() {
         </center>
     </div>
     <center>
-        <form action="">
+        <form id="searchForm">
         <div class="mt-10  space-x-3">
             <select name="language" id="language" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
                 <option value="">Select Language</option>
                 <option value="tamil">Tamil</option>
                 <option value="english">English</option>
                 <option value="Malayalam">Malayalam</option>
-				<option value="hindi">Hindi</option>
-				<option value="telugu">Telugu</option>
+                <option value="hindi">Hindi</option>
+                <option value="telugu">Telugu</option>
             </select>
 
             <select name="gender" id="gender" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
@@ -76,9 +69,9 @@ frappe.ready(function() {
                 <option value="">Select Slang</option>
                 <option value="madurai">Madurai</option>
                 <option value="Madras">Madras</option>
-				<option value="general">General</option>
+                <option value="general">General</option>
             </select>
-				
+                
             <select name="age" id="age" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
                 <option value="">Select Age</option>
                 <option value="r1">5-10</option>
@@ -92,109 +85,224 @@ frappe.ready(function() {
                 <option value="r9">45-50</option>
                 </select> 
                 
-                <button type="submit" class=" btn-search bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full space-x-1 h-8 w-24">{{ _('Search') }}</button>
+                <button type="submit" class="btn-search bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full space-x-1 h-8 w-24">{{ _('Search') }}</button>
            {% if frappe.form_dict.scope %}
-				<input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
-			{% endif %}
+                <input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
+            {% endif %}
         </form>
 
     <!-- Button to open the popup -->
-    <button type="button"  id="openModalButton" class="bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full h-8 w-24"> Enquiry</button>
+    <button type="button" id="openModalButton" class="bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full h-8 w-24">Enquiry</button>
+    
+    <div id="myModal" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-SpringWood p-8 rounded-lg shadow-lg z-50 border-4 border-GreenishBlue" style="width:auto; height:auto">
+    <div class="w-auto h-auto">
+      <span id="closeButton" class="absolute top-0 right-3 cursor-pointer text-gray-600 text-xl">&times;</span>
+    <div class="flex justify-center">
+      <form id="enquiryForm" class="flex flex-col ">
+        <div class="flex items-start mt-5">
+          <label for="name" class="block text-2xl font-bold text-black font-serif pr-3 mr-36">Name:</label>
+          <div class="flex flex-col">
+            <input type="text" id="cust_name" name="cust_name" placeholder="Enter Your Name" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2" minlength="3">
+            <div id="name-error" class="hidden text-red-900 text-xs mt-1">Please enter your name.</div>
+          </div>
+        </div>
 
-        <div id="myModal" class="hidden fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-SpringWood p-8 rounded-lg shadow-lg z-50 border-4 border-GreenishBlue " style="width:auto; height:auto">
-            <div class="w-auto h-auto">
-            <span id="closeButton" class="absolute top-0 right-3 cursor-pointer text-gray-600 text-xl">&times;</span>
-            <div class="flex justify-center">
-                <form class="flex flex-col ">
-                    <div class="flex items-center mt-5">
-                        <label for="name" class="block text-2xl font-bold text-black font-serif pr-3 mr-36">Name:</label>
-                        <input type="text" id="cust_name" name="cust_name" placeholder="Enter Your Name" class=" text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
-                    
-                    </div>
-                    <div class="flex items-center mt-5">
-                        <label for="E-Mail" class="block text-2xl font-bold text-black font-serif pr-2 mr-36">E-Mail:</label>
-                        <input type="text" id="email_id" name="email_id" placeholder="Enter Your E-Mail" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
-                    </div>
-                    <div class="flex items-center mt-5">
-                        <label for="Pone_number" class="block text-2xl font-bold text-black font-serif pr-3 mr-11">Phone Number:</label>
-                        <input type="text" id="phone_number" name="phone_number" placeholder="Enter Your Phone number" class="  text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
-                    </div>
-                    
-                    <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
-                    <div class="text-center ">
-                        <button type="button" id="btn-enquery" class="btn-enquery bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
-                    </div>
-                </form>
-            </div>
+        <div class="flex items-start mt-5">
+          <label for="E-Mail" class="block text-2xl font-bold text-black font-serif pr-2 mr-36">E-Mail:</label>
+          <div class="flex flex-col">
+            <input type="text" id="email_id" name="email_id" placeholder="Enter Your E-Mail" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2">
+            <div id="email-error" class="hidden text-red-900 text-xs mt-1">Please enter a valid email address.</div>
+          </div>
+        </div>
+
+        <div class="flex items-start mt-5">
+          <label for="Pone_number" class="block text-2xl font-bold text-black font-serif pr-3 mr-11">Phone Number:</label>
+          <div class="flex flex-col">
+            <input type="text" id="phone_number" name="phone_number" placeholder="Enter Your Phone Number" class="text-xl font-bold text-black mt-3 font-serif border-2 rounded-md border-black px-28 py-2" minlength="10">
+            <div id="phone-error" class="hidden text-red-900 text-xs mt-1">Please enter a valid phone number.</div>
+          </div>
+        </div>
+        
+
+        <script>
+          const nameInput = document.getElementById('cust_name');
+          const emailInput = document.getElementById('email_id');
+          const phoneInput = document.getElementById('phone_number');
+          const enquiryForm = document.getElementById('enquiryForm');
+
+          const nameError = document.getElementById('name-error');
+          const emailError = document.getElementById('email-error');
+          const phoneError = document.getElementById('phone-error');
+
+          function validateName(name) {
+            return name.length >= 3;
+          }
+
+          function validateEmail(email) {
+            const re = /\S+@\S+\.\S+/;
+            return re.test(email);
+          }
+
+          function validatePhoneNumber(phoneNumber) {
+            return phoneNumber.length >= 10;
+          }
+
+          function handleInput() {
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const phoneNumber = phoneInput.value.trim();
+
+            if (!validateName(name)) {
+              nameError.classList.remove('hidden');
+            } else {
+              nameError.classList.add('hidden');
+            }
+
+            if (!validateEmail(email)) {
+              emailError.classList.remove('hidden');
+            } else {
+              emailError.classList.add('hidden');
+            }
+
+            if (!validatePhoneNumber(phoneNumber)) {
+              phoneError.classList.remove('hidden');
+            } else {
+              phoneError.classList.add('hidden');
+            }
+          }
+
+          function handleSubmit(event) {
+            event.preventDefault(); 
+
+            handleInput(); 
+
+            const errors = document.querySelectorAll('.text-red-900');
+            let hasError = false;
+            errors.forEach(error => {
+              if (!error.classList.contains('hidden')) {
+                hasError = true;
+              }
+            });
+
+            if (!hasError) {
+              alert('Form submitted successfully!');
+              enquiryForm.reset(); 
+            }
+          }
+
+          nameInput.addEventListener('input', handleInput);
+          emailInput.addEventListener('input', handleInput);
+          phoneInput.addEventListener('input', handleInput);
+
+          enquiryForm.addEventListener('submit', handleSubmit);
+        </script>
+
+        <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
+        <div class="text-center ">
+          <button type="button" id="btn-enquery" class="btn-enquery bg-GreenishBlue hover:bg-teal-500 mt-7 text-white font-bold font-serif py-2 px-4 rounded">Submit</button>
+        </div>
+      </form>
+    </div>
         </div>
     </div>
 
     <script>
-	function removeDuplicates(arr) {
-	    return [...new Set(arr)];
-        }
-        const openModalButton = document.getElementById('openModalButton');
-        const selected_profiles = document.getElementsByClassName("selected_profile")
-        const modal = document.getElementById('myModal');
-        const overlay = document.getElementById('overlay');
-        const closeButton = document.getElementById('closeButton');
-        const submitButton = document.getElementById('btn-enquery');
-
-        openModalButton.addEventListener('click', () => {
-            const profile_list = [];
-            for(profile of selected_profiles) {
-		if (profile.checked) {
-      		    if (profile.value) {
-	                profile_list.push(profile.value);
-		    }
-	        }
-	    }
-            p_list = removeDuplicates(profile_list);
-	    console.log(p_list.toString());
-	    document.getElementById("artist_member_id_list").value = p_list.toString(); 
-
-            modal.classList.remove('hidden');
-            overlay.classList.remove('hidden');
-        });
-        
-	submitButton.addEventListener('click', () => {
-            frappe.call({
-                method: 'voicebank.www.enquery.search',
-                args: {
-                    cust_name: document.getElementById('cust_name').value,
-                    email_id: document.getElementById('email_id').value,
-                    phone_number: document.getElementById('phone_number').value,
-                    member_id_list: document.getElementById('artist_member_id_list').value
-                },
-                callback: function(r) {
-                    $(r.message.results).appendTo('.enquery-response');
-                    $('.btn-enquery').toggleClass('hidden', !!!r.message.has_more);
-                }
-            });
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
-
-        closeButton.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
-
-        overlay.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            overlay.classList.add('hidden');
-        });
-	
-    </script>      
+      function removeDuplicates(arr) {
+          return [...new Set(arr)];
+      }
+      
+      const openModalButton = document.getElementById('openModalButton');
+      const selected_profiles = document.getElementsByClassName("selected_profile")
+      const modal = document.getElementById('myModal');
+      const overlay = document.getElementById('overlay');
+      const closeButton = document.getElementById('closeButton');
+      const submitButton = document.getElementById('btn-enquery');
+  
+      openModalButton.addEventListener('click', () => {
+          const profile_list = [];
+          for(profile of selected_profiles) {
+              if (profile.checked) {
+                  if (profile.value) {
+                      profile_list.push(profile.value);
+                  }
+              }
+          }
+          p_list = removeDuplicates(profile_list);
+          console.log(p_list.toString());
+          document.getElementById("artist_member_id_list").value = p_list.toString(); 
+  
+          modal.classList.remove('hidden');
+          overlay.classList.remove('hidden');
+      });
+  
+      submitButton.addEventListener('click', () => {
+          const name = document.getElementById('cust_name').value.trim();
+          const email = document.getElementById('email_id').value.trim();
+          const phone = document.getElementById('phone_number').value.trim();
+          const nameError = document.getElementById('name-error');
+          const emailError = document.getElementById('email-error');
+          const phoneError = document.getElementById('phone-error');
+          
+          
+          if (name === '' || name.length < 3) {
+              nameError.classList.remove('hidden');
+              document.getElementById('cust_name').classList.add('border-red-500');
+          } else {
+              nameError.classList.add('hidden');
+              document.getElementById('cust_name').classList.remove('border-red-500');
+          }
+  
+          if (email === '' || !validateEmail(email)) {
+              emailError.classList.remove('hidden');
+              document.getElementById('email_id').classList.add('border-red-500');
+          } else {
+              emailError.classList.add('hidden');
+              document.getElementById('email_id').classList.remove('border-red-500');
+          }
+  
+          if (phone === '' || phone.length < 10) {
+              phoneError.classList.remove('hidden');
+              document.getElementById('phone_number').classList.add('border-red-500');
+          } else {
+              phoneError.classList.add('hidden');
+              document.getElementById('phone_number').classList.remove('border-red-500');
+          }
+  
+          const errors = document.querySelectorAll('.text-red-900');
+          let hasError = false;
+          errors.forEach(error => {
+              if (!error.classList.contains('hidden')) {
+                  hasError = true;
+              }
+          });
+          
+          if (!hasError) {
+              document.getElementById('enquiryForm').submit();
+              alert('Form submitted successfully!');
+              modal.classList.add('hidden');
+              overlay.classList.add('hidden');
+          }
+      });
+  
+      closeButton.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          overlay.classList.add('hidden');
+      });
+  
+      overlay.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          overlay.classList.add('hidden');
+      });
+  </script>
+  
     </div>
     </center>
 </center>
 
 
-<div clas
-s="search-result">
+<div class="search-result">
 <form>
-	{% include "voicebank/templates/includes/search_result.html" %}
+    {% include "voicebank/templates/includes/search_result.html" %}
 </form>
 </div>
 {% endblock %}
