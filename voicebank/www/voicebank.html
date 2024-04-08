@@ -277,7 +277,21 @@ frappe.ready(function() {
           });
           
           if (!hasError) {
-              document.getElementById('enquiryForm').submit();
+
+             frappe.call({
+                method: 'voicebank.www.enquery.search',
+                args: {
+                    cust_name: document.getElementById('cust_name').value,
+                    email_id: document.getElementById('email_id').value,
+                    phone_number: document.getElementById('phone_number').value,
+                    member_id_list: document.getElementById('artist_member_id_list').value
+                },
+                callback: function(r) {
+                    $(r.message.results).appendTo('.enquery-response');
+                    $('.btn-enquery').toggleClass('hidden', !!!r.message.has_more);
+                }
+	     });
+
               alert('Form submitted successfully!');
               modal.classList.add('hidden');
               overlay.classList.add('hidden');
