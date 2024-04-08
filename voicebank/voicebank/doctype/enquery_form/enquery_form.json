@@ -9,7 +9,8 @@
   "name1",
   "email_id",
   "phone_number",
-  "memebr_id_list"
+  "memebr_id_list",
+  "amended_from"
  ],
  "fields": [
   {
@@ -28,19 +29,29 @@
   },
   {
    "fieldname": "phone_number",
-   "fieldtype": "Phone",
+   "fieldtype": "Data",
    "label": "Phone Number"
   },
   {
    "fieldname": "memebr_id_list",
    "fieldtype": "Data",
    "label": "Memebr ID List"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Enquery Form",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2024-04-06 00:27:12.922323",
+ "modified": "2024-04-07 13:48:58.250345",
  "modified_by": "Administrator",
  "module": "Voicebank",
  "name": "Enquery Form",
@@ -55,6 +66,20 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "select": 1,
    "share": 1,
    "submit": 1,
    "write": 1
