@@ -80,6 +80,8 @@ def search(cust_name, email_id, phone_number, member_id_list):
     num = 1
     for member_id in member_id_list.split(","):
 
+        print ("MEMEBR ID")
+        print (member_id)
         artist_profile_filters = {
             "member_id": member_id
         }
@@ -125,31 +127,34 @@ def search(cust_name, email_id, phone_number, member_id_list):
     #
     # Send Email to admin
     #
-    admin_email = "agevenkat@gmail.com"
-    mail_template_for_admin = """
+    print ("member_id_list")
+    print (member_id_list)
+    if member_id_list:
+        admin_email = "agevenkat@gmail.com"
+        mail_template_for_admin = """
 
-        Dear SICTADAU Admin,
+            Dear SICTADAU Admin,
 
-        We're in need of the contact details of the listed members $member_id_list. Could you kindly provide us with their email addresses and phone numbers? Any additional information would be appreciated.
-        Thank you for your assistance.
+            We're in need of the contact details of the listed members $member_id_list. Could you kindly provide us with their email addresses and phone numbers? Any additional information would be appreciated.
+            Thank you for your assistance.
 
-        Best regards,
-        $cust_name
-    """
-    template_admin = Template(mail_template_for_admin)
+            Best regards,
+            $cust_name
+        """
+        template_admin = Template(mail_template_for_admin)
 
-    dict_admin_content = {
-        "cust_name": cust_name,
-        "member_id_list": member_id_list
-    }
-    mail_content_for_admin = template_admin.substitute(dict_admin_content)
+        dict_admin_content = {
+            "cust_name": cust_name,
+            "member_id_list": member_id_list
+        }
+        mail_content_for_admin = template_admin.substitute(dict_admin_content)
 
-    print (mail_content_for_admin)
-    frappe.sendmail(
-            recipients = admin_email,
-            subject = mail_subject_for_customer,
-            content = mail_content_for_admin,
-            now = True
+        print (mail_content_for_admin)
+        frappe.sendmail(
+                recipients = admin_email,
+                subject = mail_subject_for_customer,
+                content = mail_content_for_admin,
+                now = True
             )
 
     return { "results" : results }
