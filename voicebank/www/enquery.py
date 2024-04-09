@@ -53,31 +53,36 @@ def search(cust_name, email_id, phone_number, member_id_list):
     #
 
     mail_content_for_customer_1 = """
-    Dear $cust_name,
+    Dear $cust_name,<br> 
 
-    Thank you for reaching out. I'm glad to assist you with the contact details of the listed members. Please find the requested information below:
+    Thank you for reaching out. I'm glad to assist you with the contact details of the listed members. Please find the requested information below:<br>
 
     """
+    template_cust_1 = Template(mail_content_for_customer_1)
+    dict_cust_content_1 = {
+            "cust_name": cust_name
+        }
+    mail_content_for_cust_1 = template_cust_1.substitute(dict_cust_content_1)
+   
     mail_content_for_customer_2 = """
-
-    $num. $member_name
-       - Email: $member_email_id
-       - Phone: $member_phone_number
+    <br>
+    $num. $member_name<br> 
+       - Email: $member_email_id<br> 
+       - Phone: $member_phone_number<br>
     """
     template_cust_2 = Template(mail_content_for_customer_2)
 
     mail_content_for_customer_3 = """
+    <br>
 
-    If you require any further assistance or have additional questions, feel free to let me know.
+    If you require any further assistance or have additional questions, feel free to let me know.<br> 
 
-    Best regards,
-    [SICTADAU Admin]
+    Best regards,<br> 
+    [SICTADAU Admin]<br> 
     """
 
-    mail_content_for_customer = ""
-    mail_subject_for_customer = "Request for Contact Details of Listed Members"
-
     num = 1
+    mail_content_for_cust_2 = ""
     for member_id in member_id_list.split(","):
 
         print ("MEMEBR ID")
@@ -108,28 +113,30 @@ def search(cust_name, email_id, phone_number, member_id_list):
                         }
 
             single_cust_details = template_cust_2.substitute(dict_cust_2)
-            mail_content_for_customer = mail_content_for_customer + single_cust_details
-
-            print ("mail_content_for_customer")
-            print (mail_content_for_customer)
+            mail_content_for_cust_2 = mail_content_for_cust_2 + single_cust_details
 
             num = num + 1
-
-
-    frappe.sendmail(
-            recipients = email_id,
-            subject = mail_subject_for_customer,
-            content = mail_content_for_customer,
-            now = True
-            )
-
 
     #
     # Send Email to admin
     #
     print ("member_id_list")
     print (member_id_list)
+
+    mail_content_for_customer = mail_content_for_cust_1 + mail_content_for_cust_2 + mail_content_for_customer_3
+    print ("mail_content_for_customer")
+    print (mail_content_for_customer)
+    mail_subject_for_customer = "Request for Contact Details of Listed Members"
+
     if member_id_list:
+        #Send mail to customer
+        frappe.sendmail(
+            recipients = email_id,
+            subject = mail_subject_for_customer,
+            content = mail_content_for_customer,
+            now = True
+            )
+
         admin_email = "agevenkat@gmail.com"
         mail_template_for_admin = """
 
