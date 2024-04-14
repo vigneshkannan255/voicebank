@@ -50,7 +50,7 @@ def search_users_by_age(age):
 def convert_age_to_dob(age):
     current_date = datetime.now()
     dob = current_date - timedelta(days=365.25 * age)
-    print ("dob.date():", dob.date())
+    #print ("dob.date():", dob.date())
     return dob.date()
 
 def get_context(context):
@@ -72,7 +72,7 @@ def get_context(context):
 def search(language, gender, slang, age, scope=None):
 
     date_range = search_users_by_age(age)
-    print ( "date_range:", date_range )
+    #print ( "date_range:", date_range )
 
     voice_bank_filters_org = {
         "language": language,
@@ -84,15 +84,15 @@ def search(language, gender, slang, age, scope=None):
         "date_of_birth": date_range
     }
 
-    print ("Original Value from Search filter")
-    print ( "voice_bank_filters_org: ", voice_bank_filters_org)
-    print ( "artist_profile_filters_org: ",  artist_profile_filters_org)
+    #print ("Original Value from Search filter")
+    #print ( "voice_bank_filters_org: ", voice_bank_filters_org)
+    #print ( "artist_profile_filters_org: ",  artist_profile_filters_org)
 
     voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
     artist_profile_filters = { k: v for k, v in artist_profile_filters_org.items() if v }
-    print ("Pre-processed filter value, which is removing empty fields")
-    print ( "voice_bank_filters: ", voice_bank_filters)
-    print ( "artist_profile_filters: ", artist_profile_filters)
+    #print ("Pre-processed filter value, which is removing empty fields")
+    #print ( "voice_bank_filters: ", voice_bank_filters)
+    #print ( "artist_profile_filters: ", artist_profile_filters)
 
     voice_list_results = frappe.get_list("Voice Upload", filters=voice_bank_filters,
                                        fields=["member_id", \
@@ -115,13 +115,13 @@ def search(language, gender, slang, age, scope=None):
                                            "status", \
                                            "profile_image"])
 
-    print ("Search Results:")
-    print ("voice_list_results", voice_list_results)
-    print ("profile_list_results", profile_list_results)
+    #print ("Search Results:")
+    #print ("voice_list_results", voice_list_results)
+    #print ("profile_list_results", profile_list_results)
 
     results = []
     if not voice_list_results or not profile_list_results:
-        print ("Eaither Profile list or voice list search list are empty")
+        #print ("Eaither Profile list or voice list search list are empty")
         results = []
     else:
         for profile in profile_list_results:
