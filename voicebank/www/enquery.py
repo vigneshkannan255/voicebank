@@ -58,11 +58,11 @@ def search(cust_name, email_id, phone_number, member_id_list):
 
     
     results = {}
-    print ("Original Value of filter")
-    print ( "enquery_form_org: ", emquery_filters_org)
+    #print ("Original Value of filter")
+    #print ( "enquery_form_org: ", emquery_filters_org)
 
     voice_list_results = frappe.get_list("Enquery Form", fields=["name1"]) 
-    print (voice_list_results)
+    #print (voice_list_results)
 
     #
     # Update database with row
@@ -74,7 +74,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
     "phone_number": phone_number,
     "member_id_list": member_id_list
     })
-    print (doc)
+    #print (doc)
     doc.insert()
 
     update_artist_profile()
@@ -117,8 +117,8 @@ def search(cust_name, email_id, phone_number, member_id_list):
     mail_content_for_cust_2 = ""
     for member_id in member_id_list.split(","):
 
-        print ("MEMEBR ID")
-        print (member_id)
+        #print ("MEMEBR ID")
+        #print (member_id)
         artist_profile_filters = {
             "member_id": member_id
         }
@@ -152,12 +152,12 @@ def search(cust_name, email_id, phone_number, member_id_list):
     #
     # Send Email to admin
     #
-    print ("member_id_list")
-    print (member_id_list)
+    #print ("member_id_list")
+    #print (member_id_list)
 
     mail_content_for_customer = mail_content_for_cust_1 + mail_content_for_cust_2 + mail_content_for_customer_3
-    print ("mail_content_for_customer")
-    print (mail_content_for_customer)
+    #print ("mail_content_for_customer")
+    #print (mail_content_for_customer)
     mail_subject_for_customer = "Request for Contact Details of Listed Members"
 
     if member_id_list:
@@ -188,7 +188,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
         }
         mail_content_for_admin = template_admin.substitute(dict_admin_content)
 
-        print (mail_content_for_admin)
+        #print (mail_content_for_admin)
         frappe.sendmail(
                 recipients = admin_email,
                 subject = mail_subject_for_customer,
