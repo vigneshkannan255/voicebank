@@ -3,6 +3,9 @@ from frappe import _
 from frappe.utils import sanitize_html
 from datetime import datetime, timedelta
 
+frappe.utils.logger.set_log_level("DEBUG")
+logger = frappe.logger("voice_bank", allow_site=True, file_count=50)
+
 def search_users_by_age(age):
     # default min and max age
     if age == "r1":
@@ -50,7 +53,7 @@ def search_users_by_age(age):
 def convert_age_to_dob(age):
     current_date = datetime.now()
     dob = current_date - timedelta(days=365.25 * age)
-    #print ("dob.date():", dob.date())
+    logger.info(f"VoiceBank: dob.date(): {dob.date()}")
     return dob.date()
 
 def get_context(context):
@@ -72,7 +75,7 @@ def get_context(context):
 def search(language, gender, slang, age, scope=None):
 
     date_range = search_users_by_age(age)
-    #print ( "date_range:", date_range )
+    logger.info(f"VoiceBank: date_range {date_range}")
 
     voice_bank_filters_org = {
         "language": language,
@@ -84,15 +87,15 @@ def search(language, gender, slang, age, scope=None):
         "date_of_birth": date_range
     }
 
-    #print ("Original Value from Search filter")
-    #print ( "voice_bank_filters_org: ", voice_bank_filters_org)
-    #print ( "artist_profile_filters_org: ",  artist_profile_filters_org)
+    logger.info(f"VoiceBank: Original Value from Search filter")
+    logger.info(f"VoiceBank: voice_bank_filters_org: {voice_bank_filters_org}")
+    logger.info(f"VoiceBank: artist_profile_filters_org: {artist_profile_filters_org}")
 
     voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
     artist_profile_filters = { k: v for k, v in artist_profile_filters_org.items() if v }
-    #print ("Pre-processed filter value, which is removing empty fields")
-    #print ( "voice_bank_filters: ", voice_bank_filters)
-    #print ( "artist_profile_filters: ", artist_profile_filters)
+    logger.info(f"VoiceBank: Pre-processed filter value, which is removing empty fields")
+    logger.info(f"VoiceBank: voice_bank_filters: {voice_bank_filters}")
+    logger.info(f"VoiceBank: artist_profile_filters: {artist_profile_filters}")
 
     voice_list_results = frappe.get_list("Voice Upload", filters=voice_bank_filters,
                                        fields=["member_id", \
@@ -115,13 +118,13 @@ def search(language, gender, slang, age, scope=None):
                                            "status", \
                                            "profile_image"])
 
-    #print ("Search Results:")
-    #print ("voice_list_results", voice_list_results)
-    #print ("profile_list_results", profile_list_results)
+    logger.info(f"VoiceBank: Search Results:")
+    logger.info(f"VoiceBank: voice_list_results {voice_list_results}")
+    logger.info(f"VoiceBank: profile_list_results {profile_list_results}")
 
     results = []
     if not voice_list_results or not profile_list_results:
-        #print ("Eaither Profile list or voice list search list are empty")
+        logger.info(f"VoiceBank: Eaither Profile list or voice list search list are empty")
         results = []
     else:
         for profile in profile_list_results:
