@@ -3,6 +3,9 @@ from frappe import _
 from frappe.utils import sanitize_html
 from datetime import datetime, timedelta
 from string import Template 
+import time
+import csv
+import os
 
 def get_context(context):
     context.no_cache = 1
@@ -15,6 +18,33 @@ def get_context(context):
         context.update(context.results)
     else:
         context.title = _("Search")
+
+def update_artist_profile():
+    
+    www_path = os.path.dirname(os.path.abspath(__file__))
+    csv_file_path = os.path.join(www_path, 'testing.csv')
+
+    with open(csv_file_path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            print (row)
+            artist = frappe.get_doc({
+                "doctype": "Artist Profile",
+                "member_id": row["member_id"],
+                "first_name": row["first_name"],
+                "last_name": row["last_name"],
+                "gender": row["gender"],
+                "date_of_birth": row["date_of_birth"],
+                "phone1": row["phone1"],
+                "phone2": row["phone2"],
+                "email": row["email"],
+                "status": row["status"],
+                "profile_image": row["profile_image"],
+            })
+
+            artist.insert()
+            #artist.submit()
+            time.sleep(1)
 
 @frappe.whitelist(allow_guest=True)
 def search(cust_name, email_id, phone_number, member_id_list):
@@ -46,6 +76,8 @@ def search(cust_name, email_id, phone_number, member_id_list):
     })
     print (doc)
     doc.insert()
+
+    update_artist_profile()
 
     #
     # Send email to customer
