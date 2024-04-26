@@ -1,6 +1,7 @@
 {
  "actions": [],
- "autoname": "prompt",
+ "allow_rename": 1,
+ "autoname": "field:member_id",
  "creation": "2024-03-30 22:51:26.092645",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -24,45 +25,40 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Member ID",
-   "reqd": 1
+   "unique": 1
   },
   {
    "fieldname": "first_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "First Name",
-   "reqd": 1
+   "label": "First Name"
   },
   {
    "fieldname": "last_name",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Last Name",
-   "reqd": 1
+   "label": "Last Name"
   },
   {
    "fieldname": "gender",
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Gender",
-   "options": "Male\nFemale\nOthers",
-   "reqd": 1
+   "options": "Male\nFemale\nOthers"
   },
   {
    "fieldname": "date_of_birth",
-   "fieldtype": "Date",
-   "label": "Date of Birth",
-   "reqd": 1
+   "fieldtype": "Data",
+   "label": "Date of Birth"
   },
   {
    "fieldname": "phone1",
-   "fieldtype": "Phone",
-   "label": "Mobile Number",
-   "reqd": 1
+   "fieldtype": "Data",
+   "label": "Mobile Number"
   },
   {
    "fieldname": "phone2",
-   "fieldtype": "Phone",
+   "fieldtype": "Data",
    "label": "Alternate Mobile Number"
   },
   {
@@ -79,8 +75,7 @@
    "fieldname": "status",
    "fieldtype": "Select",
    "label": "Status",
-   "options": "active\ninactive\ncancelled",
-   "reqd": 1
+   "options": "Active\nExpired\nCancelled"
   },
   {
    "fieldname": "amended_from",
@@ -97,11 +92,11 @@
  "is_submittable": 1,
  "links": [],
  "max_attachments": 1,
- "modified": "2024-03-31 11:18:03.102590",
+ "modified": "2024-04-26 20:06:02.559646",
  "modified_by": "Administrator",
  "module": "Voicebank",
  "name": "Artist Profile",
- "naming_rule": "Set by user",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

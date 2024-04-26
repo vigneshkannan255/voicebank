@@ -3,6 +3,12 @@ from frappe import _
 from frappe.utils import sanitize_html
 from datetime import datetime, timedelta
 from string import Template 
+import time
+import csv
+import os
+
+frappe.utils.logger.set_log_level("DEBUG")
+logger = frappe.logger("voice_bank", allow_site=True, file_count=50)
 
 def get_context(context):
     context.no_cache = 1
@@ -10,11 +16,38 @@ def get_context(context):
         cust_name = sanitize_html(frappe.form_dict.get('cust_name'))
         email_id = sanitize_html(frappe.form_dict.get('email_id'))
         phone_number = sanitize_html(frappe.form_dict.get('phone_number'))
-        member_id_list = sanitize_html(frappe.form_dict.get('member_id_list'))
+        member_id_list = sanitize_html(frappe.form_dict.get('artist_member_id_list'))
         context.results = search(cust_name, email_id, phone_number, member_id_list)
         context.update(context.results)
     else:
         context.title = _("Search")
+
+def update_artist_profile():
+    
+    www_path = os.path.dirname(os.path.abspath(__file__))
+    csv_file_path = os.path.join(www_path, 'testing.csv')
+
+    with open(csv_file_path, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            logger.info(f"Enquery: {row}")
+            artist = frappe.get_doc({
+                "doctype": "Artist Profile",
+                "member_id": row["member_id"],
+                "first_name": row["first_name"],
+                "last_name": row["last_name"],
+                "gender": row["gender"],
+                "date_of_birth": row["date_of_birth"],
+                "phone1": row["phone1"],
+                "phone2": row["phone2"],
+                "email_id": row["email"],
+                "status": row["status"],
+                "profile_image": row["profile_image"],
+            })
+
+            artist.insert()
+            logger.info(f"Enquery: {artist}")
+            time.sleep(1)
 
 @frappe.whitelist(allow_guest=True)
 def search(cust_name, email_id, phone_number, member_id_list):
@@ -28,11 +61,11 @@ def search(cust_name, email_id, phone_number, member_id_list):
 
     
     results = {}
-    print ("Original Value of filter")
-    print ( "enquery_form_org: ", emquery_filters_org)
+    logger.info(f"Enquery: Original Value of filter")
+    logger.info(f"Enquery: enquery_form_org: {emquery_filters_org}")
 
     voice_list_results = frappe.get_list("Enquery Form", fields=["name1"]) 
-    print (voice_list_results)
+    logger.info(f"Enquery: {voice_list_results}")
 
     #
     # Update database with row
@@ -44,8 +77,10 @@ def search(cust_name, email_id, phone_number, member_id_list):
     "phone_number": phone_number,
     "member_id_list": member_id_list
     })
-    print (doc)
+    logger.info(f"Enquery: {doc}")
     doc.insert()
+
+    #update_artist_profile()
 
     #
     # Send email to customer
@@ -85,8 +120,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
     mail_content_for_cust_2 = ""
     for member_id in member_id_list.split(","):
 
-        print ("MEMEBR ID")
-        print (member_id)
+        logger.info(f"Enquery: MEMEBR ID: {member_id}")
         artist_profile_filters = {
             "member_id": member_id
         }
@@ -99,7 +133,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
                                            "date_of_birth", \
                                            "phone1", \
                                            "phone2", \
-                                           "email", \
+                                           "email_id", \
                                            "status", \
                                            "profile_image"])
 
@@ -107,8 +141,8 @@ def search(cust_name, email_id, phone_number, member_id_list):
             profile_list_result = profile_list_results[0]
             dict_cust_2 = { "num": str(num),
                             "member_name": "%s %s" %  (profile_list_result["first_name"], profile_list_result["last_name"]),
-                            #"member_email_id": profile_list_result["email"],
-                            "member_email_id": "xxxxx@yyy.com",
+                            "member_email_id": profile_list_result["email_id"],
+                            #"member_email_id": "xxxxx@yyy.com",
                             "member_phone_number": profile_list_result["phone1"]
                         }
 
@@ -120,12 +154,10 @@ def search(cust_name, email_id, phone_number, member_id_list):
     #
     # Send Email to admin
     #
-    print ("member_id_list")
-    print (member_id_list)
+    logger.info(f"Enquery: member_id_list: {member_id_list}")
 
     mail_content_for_customer = mail_content_for_cust_1 + mail_content_for_cust_2 + mail_content_for_customer_3
-    print ("mail_content_for_customer")
-    print (mail_content_for_customer)
+    logger.info(f"Enquery: mail_content_for_customer: {mail_content_for_customer}")
     mail_subject_for_customer = "Request for Contact Details of Listed Members"
 
     if member_id_list:
@@ -156,7 +188,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
         }
         mail_content_for_admin = template_admin.substitute(dict_admin_content)
 
-        print (mail_content_for_admin)
+        logger.info(f"Enquery: mail_content_for_admin: {mail_content_for_admin}")
         frappe.sendmail(
                 recipients = admin_email,
                 subject = mail_subject_for_customer,
