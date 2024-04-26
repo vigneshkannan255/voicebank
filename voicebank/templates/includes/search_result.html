@@ -2,7 +2,7 @@
     {% if results %}
     <div class="container text-center flex flex-wrap justify-center"> 
     {% for data in results %}
-    <div class="artist bg-white mt-14 h-96 w-96 pb-5 rounded-3xl overflow-hidden shadow-md mx-2 mb-4 flex flex-col justify-between">
+    <div class="artist bg-white mt-14 pb-5 rounded-3xl overflow-hidden shadow-lg mx-2 mb-4 flex flex-col justify-between"style="height: auto;width: 290px";>
 		<div>
             <label class="inline-flex items-center" style="float:right;margin:10px">
                 <input onclick="toggleCheckbox(this)" class="selected_profile hidden" type="checkbox" name="voice_{{ loop.index }}" value="{{data['member_id']}}">
@@ -14,21 +14,20 @@
             </label>
         </div>
         
-        
-        <div class="h-60 flex items-center justify-center"> 
+        <div class=" flex items-center justify-center"> 
             <img src={{data['voice_image']}} alt="Dubbing Artist" width="90" height="90">
         </div>
 		
-        <div class="artist-info px-4 py-2">
-            <h4 class="mt-2 text-base text-GreenishBlue font-serif">Name: {{data['first_name']}} {{data['last_name']}} </h4>
+        <div class="artist-info px-4 ">
+            <h4 class="mt-0 text-base text-GreenishBlue font-serif">Name: {{data['first_name']}} {{data['last_name']}} </h4>
 			 <div class="text-base text-GreenishBlue font-serif">
-                <p><span>Gender:</span> {{data['gender']}}</p>
-                <p><span>Category:</span> {{data['category']}}</p>
-                <p><span>Language:</span> {{data['language']}}</p>
-                <p><span>Slang:</span> {{data['slang']}}</p>
+                <div class="mb-1"><span>Gender:</span> {{data['gender']}}</div>
+                <div class="mb-1"><span>Category:</span> {{data['category']}}</div>
+                <div class="mb-1"><span>Language:</span> {{data['language']}}</div>
+                <div class="mb-1"><span>Slang:</span> {{data['slang']}}</div>
             </div>
         </div>
-        <div class="mt-2 flex justify-center">
+        <div class="ml-5 mb-2 flex justify-center" style="height: 40px;width: 250px; ">
             <audio controls class="w-full"> 
                 <source src={{data['voice']}} type="audio/mpeg">
             </audio>
@@ -44,12 +43,18 @@
         checkbox.checked = !checkbox.checked;
     }
 
+    
+
     function toggleCheckbox(checkbox) {
         var heartIcon = checkbox.parentNode.querySelector('#heartIcon');
         if (checkbox.checked) {
             heartIcon.setAttribute('fill', '#FF007F');
-        } else {
+            heartIcon.addEventListener('click', function() {
+            document.getElementById('openModalButton').classList.remove('hidden');
+    });
+    }else {
             heartIcon.setAttribute('fill', 'currentColor');
+            document.getElementById('openModalButton').classList.add('hidden');
         }
     }
     
