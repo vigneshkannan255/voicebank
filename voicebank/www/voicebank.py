@@ -114,13 +114,13 @@ def search(language, gender, slang, age, scope=None):
                                            "date_of_birth", \
                                            "phone1", \
                                            "phone2", \
-                                           "email", \
+                                           "email_id", \
                                            "status", \
                                            "profile_image"])
 
     logger.info(f"VoiceBank: Search Results:")
     logger.info(f"VoiceBank: voice_list_results {voice_list_results}")
-    logger.info(f"VoiceBank: profile_list_results {profile_list_results}")
+    #logger.info(f"VoiceBank: profile_list_results {profile_list_results}")
 
     results = []
     if not voice_list_results or not profile_list_results:

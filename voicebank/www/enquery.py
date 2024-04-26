@@ -16,7 +16,7 @@ def get_context(context):
         cust_name = sanitize_html(frappe.form_dict.get('cust_name'))
         email_id = sanitize_html(frappe.form_dict.get('email_id'))
         phone_number = sanitize_html(frappe.form_dict.get('phone_number'))
-        member_id_list = sanitize_html(frappe.form_dict.get('member_id_list'))
+        member_id_list = sanitize_html(frappe.form_dict.get('artist_member_id_list'))
         context.results = search(cust_name, email_id, phone_number, member_id_list)
         context.update(context.results)
     else:
@@ -40,7 +40,7 @@ def update_artist_profile():
                 "date_of_birth": row["date_of_birth"],
                 "phone1": row["phone1"],
                 "phone2": row["phone2"],
-                "email": row["email"],
+                "email_id": row["email"],
                 "status": row["status"],
                 "profile_image": row["profile_image"],
             })
@@ -133,7 +133,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
                                            "date_of_birth", \
                                            "phone1", \
                                            "phone2", \
-                                           "email", \
+                                           "email_id", \
                                            "status", \
                                            "profile_image"])
 
@@ -141,7 +141,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
             profile_list_result = profile_list_results[0]
             dict_cust_2 = { "num": str(num),
                             "member_name": "%s %s" %  (profile_list_result["first_name"], profile_list_result["last_name"]),
-                            "member_email_id": profile_list_result["email"],
+                            "member_email_id": profile_list_result["email_id"],
                             #"member_email_id": "xxxxx@yyy.com",
                             "member_phone_number": profile_list_result["phone1"]
                         }
