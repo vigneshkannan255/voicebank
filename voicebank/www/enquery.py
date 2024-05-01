@@ -25,19 +25,22 @@ def get_context(context):
 def update_artist_profile():
     
     www_path = os.path.dirname(os.path.abspath(__file__))
-    csv_file_path = os.path.join(www_path, 'testing.csv')
+    csv_file_path = os.path.join(www_path, 'test_1234.csv')
 
     with open(csv_file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             logger.info(f"Enquery: {row}")
+            # format = DD-MM-YYYY
+            dob = row["date_of_birth"].split("-")
+            datetime_object = datetime(int(dob[2]), int(dob[1]), int(dob[0]))
             artist = frappe.get_doc({
                 "doctype": "Artist Profile",
                 "member_id": row["member_id"],
                 "first_name": row["first_name"],
                 "last_name": row["last_name"],
                 "gender": row["gender"],
-                "date_of_birth": row["date_of_birth"],
+                "date_of_birth": datetime_object.strftime('%Y-%m-%d'),
                 "phone1": row["phone1"],
                 "phone2": row["phone2"],
                 "email_id": row["email"],
@@ -79,6 +82,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
     })
     logger.info(f"Enquery: {doc}")
     doc.insert()
+    time.sleep(1)
 
     #update_artist_profile()
 
