@@ -25,7 +25,7 @@ def get_context(context):
 def update_artist_profile():
     
     www_path = os.path.dirname(os.path.abspath(__file__))
-    csv_file_path = os.path.join(www_path, 'test.csv')
+    csv_file_path = os.path.join(www_path, 'test_1234.csv')
 
     with open(csv_file_path, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -84,7 +84,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
     doc.insert()
     time.sleep(1)
 
-    update_artist_profile()
+    #update_artist_profile()
 
     #
     # Send email to customer
