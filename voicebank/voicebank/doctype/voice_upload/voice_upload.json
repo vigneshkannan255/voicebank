@@ -1,6 +1,5 @@
 {
  "actions": [],
- "autoname": "prompt",
  "creation": "2024-03-09 21:12:32.506412",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -78,11 +77,10 @@
  "links": [],
  "make_attachments_public": 1,
  "max_attachments": 5,
- "modified": "2024-04-22 22:48:33.850112",
+ "modified": "2024-05-02 19:45:06.555353",
  "modified_by": "Administrator",
  "module": "Voicebank",
  "name": "Voice Upload",
- "naming_rule": "Set by user",
  "nsm_parent_field": "parent_voicebank",
  "owner": "Administrator",
  "permissions": [
