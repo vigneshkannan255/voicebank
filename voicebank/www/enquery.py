@@ -87,41 +87,67 @@ def search(cust_name, email_id, phone_number, member_id_list):
     #update_artist_profile()
 
     #
-    # Send email to customer
+    # Send email to Admin
     # Here content generated based on template
     #
 
-    mail_content_for_customer_1 = """
+    mail_template_for_admin = """
+
+        Dear SICTADAU Admin,<br>
+
+        We're in need of the contact details of the listed members $member_id_list.<br>
+        Could you kindly provide us with their email addresses and phone numbers?<br>
+        Any additional information would be appreciated.<br>
+        Thank you for your assistance.<br>
+
+        Best regards, <br>
+        Name: $cust_name <br>
+        Email ID: $email_id <by>
+        Phone: $phone <br>
+        """
+    template_admin = Template(mail_template_for_admin)
+
+    dict_admin_content = {
+            "cust_name": cust_name,
+            "email_id": email_id,
+            "phone": phone_number,
+            "member_id_list": member_id_list
+        }
+    mail_content_for_admin = template_admin.substitute(dict_admin_content)
+
+    mail_content_for_admin_1 = """
+    Note: This message has to be farwared to requester<br>
+    =========================<br>
     Dear $cust_name,<br> 
 
-    Thank you for reaching out. I'm glad to assist you with the contact details of the listed members. Please find the requested information below:<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Thank you for reaching out. I'm glad to assist you with the contact details of the listed members. Please find the requested information below:<br>
 
     """
-    template_cust_1 = Template(mail_content_for_customer_1)
-    dict_cust_content_1 = {
+    template_admin_1 = Template(mail_content_for_admin_1)
+    dict_admin_content_1 = {
             "cust_name": cust_name
         }
-    mail_content_for_cust_1 = template_cust_1.substitute(dict_cust_content_1)
+    mail_content_for_admin_1 = template_admin_1.substitute(dict_admin_content_1)
    
-    mail_content_for_customer_2 = """
+    mail_content_for_admin_2 = """
     <br>
     $num. $member_name<br> 
-       - Email: $member_email_id<br> 
-       - Phone: $member_phone_number<br>
+       &nbsp;&nbsp;- Email: $member_email_id<br> 
+       &nbsp;&nbsp;- Phone: $member_phone_number<br>
     """
-    template_cust_2 = Template(mail_content_for_customer_2)
+    template_admin_2 = Template(mail_content_for_admin_2)
 
-    mail_content_for_customer_3 = """
+    mail_content_for_admin_3 = """
     <br>
-
     If you require any further assistance or have additional questions, feel free to let me know.<br> 
 
     Best regards,<br> 
-    [SICTADAU Admin]<br> 
+    [SICTADAU Admin]<br>
+    =========================<br>
     """
 
     num = 1
-    mail_content_for_cust_2 = ""
+    mail_content_for_admin_2 = ""
     for member_id in member_id_list.split(","):
 
         logger.info(f"Enquery: MEMEBR ID: {member_id}")
@@ -150,8 +176,8 @@ def search(cust_name, email_id, phone_number, member_id_list):
                             "member_phone_number": profile_list_result["phone1"]
                         }
 
-            single_cust_details = template_cust_2.substitute(dict_cust_2)
-            mail_content_for_cust_2 = mail_content_for_cust_2 + single_cust_details
+            single_cust_details = template_admin_2.substitute(dict_cust_2)
+            mail_content_for_admin_2 = mail_content_for_admin_2 + single_cust_details
 
             num = num + 1
 
@@ -160,43 +186,44 @@ def search(cust_name, email_id, phone_number, member_id_list):
     #
     logger.info(f"Enquery: member_id_list: {member_id_list}")
 
-    mail_content_for_customer = mail_content_for_cust_1 + mail_content_for_cust_2 + mail_content_for_customer_3
-    logger.info(f"Enquery: mail_content_for_customer: {mail_content_for_customer}")
+    mail_content_for_admin = mail_content_for_admin + mail_content_for_admin_1 + mail_content_for_admin_2 + mail_content_for_admin_3
+    logger.info(f"Enquery: mail_content_for_admin: {mail_content_for_admin}")
     mail_subject_for_customer = "Request for Contact Details of Listed Members"
 
     if member_id_list:
-        #Send mail to customer
+        #Send mail to Admin
+        admin_email = "agevenkat@gmail.com"
         frappe.sendmail(
-            recipients = email_id,
+            recipients = admin_email,
             subject = mail_subject_for_customer,
-            content = mail_content_for_customer,
+            content = mail_content_for_admin,
             now = True
             )
 
-        admin_email = "agevenkat@gmail.com"
-        mail_template_for_admin = """
+        #
+        # Send mail to customer
+        #
+        mail_template_for_customer = """
 
-            Dear SICTADAU Admin,
+            Dear $cust_name,<br> 
 
-            We're in need of the contact details of the listed members $member_id_list. Could you kindly provide us with their email addresses and phone numbers? Any additional information would be appreciated.
-            Thank you for your assistance.
+            Thank you for reaching out SICTADAU, We will send you the requested voice artist profile as soon as possible.<br>
 
-            Best regards,
-            $cust_name
+            Best regards,<br>
+            [SICTADAU Admin]<br>
         """
-        template_admin = Template(mail_template_for_admin)
+        template_cust = Template(mail_template_for_customer)
 
-        dict_admin_content = {
-            "cust_name": cust_name,
-            "member_id_list": member_id_list
+        dict_cust_content = {
+            "cust_name": cust_name
         }
-        mail_content_for_admin = template_admin.substitute(dict_admin_content)
+        mail_content_for_cust = template_cust.substitute(dict_cust_content)
 
-        logger.info(f"Enquery: mail_content_for_admin: {mail_content_for_admin}")
+        logger.info(f"Enquery: mail_content_for_cust: {mail_content_for_cust}")
         frappe.sendmail(
-                recipients = admin_email,
+                recipients = email_id,
                 subject = mail_subject_for_customer,
-                content = mail_content_for_admin,
+                content = mail_content_for_cust,
                 now = True
             )
 
