@@ -95,28 +95,28 @@ def search(cust_name, email_id, phone_number, member_id_list):
 
         Dear SICTADAU Admin,<br>
 
-        We're in need of the contact details of the listed members $member_id_list.<br>
+        We're in need of the contact details of the listed members <b>$member_id_list</b>.<br>
         Could you kindly provide us with their email addresses and phone numbers?<br>
         Any additional information would be appreciated.<br>
         Thank you for your assistance.<br>
 
         Best regards, <br>
         Name: $cust_name <br>
-        Email ID: $email_id <by>
-        Phone: $phone <br>
+        Email ID: $email_id <br>
+        Phone: $phone_number <br><br>
         """
     template_admin = Template(mail_template_for_admin)
 
     dict_admin_content = {
             "cust_name": cust_name,
             "email_id": email_id,
-            "phone": phone_number,
+            "phone_number": phone_number,
             "member_id_list": member_id_list
         }
     mail_content_for_admin = template_admin.substitute(dict_admin_content)
 
     mail_content_for_admin_1 = """
-    Note: This message has to be farwared to requester<br>
+    <b>Note: This message has to be farwared to requester</b><br>
     =========================<br>
     Dear $cust_name,<br> 
 
@@ -192,6 +192,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
 
     if member_id_list:
         #Send mail to Admin
+        admin_email = "ethirajit@gmail.com"
         admin_email = "agevenkat@gmail.com"
         frappe.sendmail(
             recipients = admin_email,
