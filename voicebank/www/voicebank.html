@@ -5,6 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="output.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <title>Dubbing Artist Information</title>
 {% extends "templates/web.html" %}
 </head>
@@ -49,31 +51,125 @@ frappe.ready(function() {
     </div>
     <center>
         <form id="searchForm">
-        <div class="mt-10  space-x-3">
-            <select name="language" id="language" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
-                <option value="">Select Language</option>
-                <option value="tamil">Tamil</option>
-                <option value="english">English</option>
-                <option value="Malayalam">Malayalam</option>
-                <option value="hindi">Hindi</option>
-                <option value="telugu">Telugu</option>
-            </select>
+          <div class="flex justify-center mt-10 space-x-3">
+            <div>
+              <input type="text" hidden name="language" id="language" value="">
+              <div class="bg-SurfCrest pr-2 pl-2 text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg h-8 w-40 flex items-center select-language-header cursor-pointer">
+                  <span class="mr-1">Select Language</span>
+                  <span class="selected-languages"></span>
+                  <i style="font-size:24px;" class="fa">&#xf107;</i>
+              </div>
 
-            <select name="gender" id="gender" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
+              <ul class="text-xl font-bold bg-SurfCrest text-GreenishBlue font-serif flex flex-col hidden language-list">
+                  <li class="flex items-center cursor-pointer language-item" onclick="selectLanguage(this, 'Tamil')">
+                      <span class="mr-2 border-black border-2 rounded-md flex items-center justify-center">
+                          <i class="material-icons text-black" style="font-size:16px; visibility: hidden;">check</i>
+                      </span>
+                      <span>Tamil</span>
+                  </li>
+                  <li class="flex items-center mt-2 cursor-pointer language-item" onclick="selectLanguage(this, 'English')">
+                      <span class="mr-2 border-black border-2 rounded-md flex items-center justify-center">
+                          <i class="material-icons text-black" style="font-size:16px; visibility: hidden;">check</i>
+                      </span>
+                      <span>English</span>
+                  </li>
+                  <li class="flex items-center mt-2 cursor-pointer language-item" onclick="selectLanguage(this, 'Malayalam')">
+                      <span class="mr-2 border-black border-2 rounded-md flex items-center justify-center">
+                          <i class="material-icons text-black" style="font-size:16px; visibility: hidden;">check</i>
+                      </span>
+                      <span>Malayalam</span>
+                  </li>
+                  <li class="flex items-center mt-2 cursor-pointer language-item" onclick="selectLanguage(this, 'Hindi')">
+                      <span class="mr-2 border-black border-2 rounded-md flex items-center justify-center">
+                          <i class="material-icons text-black" style="font-size:16px; visibility: hidden;">check</i>
+                      </span>
+                      <span>Hindi</span>
+                  </li>
+                  <li class="flex items-center mt-2 cursor-pointer language-item" onclick="selectLanguage(this, 'Telugu')">
+                      <span class="mr-2 border-black border-2 rounded-md flex items-center justify-center">
+                          <i class="material-icons text-black" style="font-size:16px; visibility: hidden;">check</i>
+                      </span>
+                      <span>Telugu</span>
+                  </li>
+                  <li class="flex items-center mt-2 cursor-pointer language-item">
+                      <button type="button" class="bg-SurfCrest text-GreenishBlue font-serif rounded-lg h-8 w-40 mt-4" onclick="submitLanguages()">Submit</button>
+                  </li>
+              </ul>
+          </div>
+          <script>
+            // Function to toggle the visibility of the language list
+            function toggleLanguageList() {
+                var languageList = document.querySelector('.language-list');
+                languageList.classList.toggle('hidden');
+            }
+
+            // Function to handle click on language items
+            function selectLanguage(language, langName) {
+                // Toggle the visibility of the check icon
+                var icon = language.querySelector('.material-icons');
+                icon.style.visibility = icon.style.visibility === 'hidden' ? 'visible' : 'hidden';
+                // Update the selected languages list
+                var selectedLanguages = document.querySelector('.selected-languages');
+                var selectedLangText = selectedLanguages.textContent;
+                if (selectedLangText === '') {
+                    selectedLangText = langName;
+                    console.log(1);
+                } else {
+                    if (!selectedLangText.includes(langName)) {
+                        selectedLangText += ',' + langName;
+                        console.log(2);
+                    } else {
+                        selectedLangText = selectedLangText.replace(',' + langName, '');
+                        selectedLangText = selectedLangText.replace(langName + ',', '');
+                        selectedLangText = selectedLangText.replace(langName, '');
+                        console.log(3);
+                    }
+                }
+                selectedLanguages.textContent = selectedLangText;
+                document.getElementById("language").value = selectedLangText.toLowerCase();
+            }
+
+            // Function to handle submission of selected languages
+            function submitLanguages() {
+                // Show the selected languages in the header
+                var selectedLanguages = document.querySelector('.selected-languages');
+                var selectedLangText = selectedLanguages.textContent;
+                if (selectedLangText !== 'None') {
+                    // Split the selected languages
+                    //var languages = selectedLangText.split('Multi Language');
+                    // Update the header with the selected languages
+                    var selectLanguageHeader = document.querySelector('.select-language-header');
+                    //selectLanguageHeader.textContent = languages.slice(0, 2).join(', ');
+                    // Hide the language list
+                    var languageList = document.querySelector('.language-list');
+                    languageList.classList.add('hidden');
+                }
+            }
+
+            // Add event listener to the "Select Language" header to toggle the visibility of the language list
+            var selectLanguageHeader = document.querySelector('.select-language-header');
+            selectLanguageHeader.addEventListener('click', toggleLanguageList);
+
+            // Add event listener to the submit button to trigger submission of selected languages
+            var submitButton = document.querySelector('.submit-button');
+            submitButton.addEventListener('click', submitLanguages);
+        </script>
+
+          <select name="gender" id="gender" class="bg-SurfCrest pr-2 pl-2 text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
                 <option value="">Select Gender</option>
                 <option value="female">Female</option>
                 <option value="male">Male</option>
                 </select>
 
-            <select name="slang" id="slang" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
+            <select name="slang" id="slang" class="bg-SurfCrest pr-2 pl-2 text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
                 <option value="">Select Slang</option>
                 <option value="madurai">Madurai</option>
                 <option value="Madras">Madras</option>
                 <option value="Coimbatore">Coimbatore</option>
                 <option value="general">General</option>
             </select>
-                
-            <select name="age" id="age" class="bg-SurfCrest text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
+
+            <select name="age" id="age" class="bg-SurfCrest pr-2 pl-2 text-xl text-center font-bold text-GreenishBlue font-serif rounded-lg  h-8 w-40">
                 <option value="">Select Age</option>
                 <option value="r1">5-10</option>
                 <option value="r2">10-15</option>
@@ -85,7 +181,7 @@ frappe.ready(function() {
                 <option value="r8">40-45</option>
                 <option value="r9">45-50</option>
                 </select> 
-                
+
                 <button type="submit" class="btn-search bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full space-x-1 h-8 w-24">{{ _('Search') }}</button>
            {% if frappe.form_dict.scope %}
                 <input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
@@ -196,7 +292,7 @@ frappe.ready(function() {
           phoneInput.addEventListener('input', handleInput);
 
           enquiryForm.addEventListener('submit', handleSubmit);
-        </script>
+          </script>
 
         <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
         <div class="text-center ">
