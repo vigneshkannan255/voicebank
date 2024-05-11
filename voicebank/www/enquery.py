@@ -193,8 +193,8 @@ def search(cust_name, email_id, phone_number, member_id_list):
 
     if member_id_list:
         #Send mail to Admin
-        admin_email = "ethirajit@gmail.com"
-        #admin_email = "agevenkat@gmail.com"
+        #admin_email = "ethirajit@gmail.com"
+        admin_email = "agevenkat@gmail.com"
         frappe.sendmail(
             recipients = admin_email,
             subject = mail_subject_for_customer,
