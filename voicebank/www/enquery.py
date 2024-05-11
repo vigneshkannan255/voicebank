@@ -131,7 +131,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
    
     mail_content_for_admin_2 = """
     <br>
-    $num. $member_name<br> 
+    $num. $member_name ($member_id)<br>
        &nbsp;&nbsp;- Email: $member_email_id<br> 
        &nbsp;&nbsp;- Phone: $member_phone_number<br>
     """
@@ -170,6 +170,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
         if profile_list_results:
             profile_list_result = profile_list_results[0]
             dict_cust_2 = { "num": str(num),
+                            "member_id": member_id,
                             "member_name": "%s %s" %  (profile_list_result["first_name"], profile_list_result["last_name"]),
                             "member_email_id": profile_list_result["email_id"],
                             #"member_email_id": "xxxxx@yyy.com",
@@ -192,7 +193,7 @@ def search(cust_name, email_id, phone_number, member_id_list):
 
     if member_id_list:
         #Send mail to Admin
-        admin_email = "ethirajit@gmail.com"
+        #admin_email = "ethirajit@gmail.com"
         admin_email = "agevenkat@gmail.com"
         frappe.sendmail(
             recipients = admin_email,
