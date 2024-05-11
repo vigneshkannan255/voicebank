@@ -2,6 +2,7 @@ import frappe
 from frappe import _
 from frappe.utils import sanitize_html
 from datetime import datetime, timedelta
+from collections import defaultdict
 
 frappe.utils.logger.set_log_level("DEBUG")
 logger = frappe.logger("voice_bank", allow_site=True, file_count=50)
@@ -92,13 +93,17 @@ def search(language, gender, slang, age, scope=None):
     logger.info(f"VoiceBank: artist_profile_filters_org: {artist_profile_filters_org}")
 
     voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
+    if "," in language:
+        lang_list = language.split(",")
+        voice_bank_filters['language'] = ['in', lang_list]
+
     artist_profile_filters = { k: v for k, v in artist_profile_filters_org.items() if v }
     logger.info(f"VoiceBank: Pre-processed filter value, which is removing empty fields")
     logger.info(f"VoiceBank: voice_bank_filters: {voice_bank_filters}")
     logger.info(f"VoiceBank: artist_profile_filters: {artist_profile_filters}")
 
-    voice_list_results = frappe.get_list("Voice Upload", filters=voice_bank_filters,
-                                       fields=["member_id", \
+    voice_list_results_all = frappe.get_list("Voice Upload", filters=voice_bank_filters,
+                                    fields=["member_id", \
                                                "language", \
                                                "slang", \
                                                "voice", \
@@ -106,6 +111,23 @@ def search(language, gender, slang, age, scope=None):
                                                "timestamp", \
                                                "category"])
     
+    if "," in language:
+        # Create a dictionary to store data for each member_id
+        member_data = defaultdict(list)
+
+        # Group data by member_id
+        for item in voice_list_results_all:
+            member_data[item['member_id']].append(item)
+
+        # Retain complete dict data for each member_id
+        voice_list_results = [item for sublist in member_data.values() if len(sublist) > 1 for item in sublist]
+
+        logger.info(f"VoiceBank: updated list : {voice_list_results}")
+    else:
+        voice_list_results = voice_list_results_all
+
+
+
     profile_list_results = frappe.get_list("Artist Profile", filters=artist_profile_filters,
                                    fields=["member_id", \
                                            "first_name", \
@@ -144,3 +166,4 @@ def search(language, gender, slang, age, scope=None):
                     results.append(result)
 
     return { "results" : results }
+
