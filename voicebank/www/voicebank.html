@@ -91,6 +91,12 @@ frappe.ready(function() {
                       </span>
                       <span>Telugu</span>
                   </li>
+                  <li class="flex items-center mt-2 pr-8 cursor-pointer language-item justify-center" onclick="selectLanguage(this, 'Kanada')" >
+                    <span class="mr-2 border-black border-2 rounded-md flex items-center justify-center">
+                        <i class="material-icons text-black" style="font-size:16px; visibility: hidden;">check</i>
+                    </span>
+                    <span>Kanada</span>
+                </li>
                   <li class="flex justify-center cursor-pointer language-item">
                       <button type="button" class="bg-GreenishBlue text-white font-serif rounded-full h-8 w-24 mt-2" onclick="submitLanguages()">Submit</button>
                   </li>
@@ -205,7 +211,7 @@ frappe.ready(function() {
 
                 <button type="submit" class="btn-search bg-GreenishBlue hover:bg-teal-500 text-white text-xl font-bold font-serif rounded-full space-x-1 h-8 w-24">{{ _('Search') }}</button>
            {% if frappe.form_dict.scope %}
-                <input type="text" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
+                <input type="text" autocomplete="off" hidden name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
             {% endif %}
         </form>
 
@@ -438,6 +444,6 @@ frappe.ready(function() {
     {% include "voicebank/templates/includes/search_result.html" %}
 </form>
 </div>
-{% endblock %}
+{% endblock %}                                                                      
 </body>
 </html>
