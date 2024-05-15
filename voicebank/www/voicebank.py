@@ -119,8 +119,14 @@ def search(language, gender, slang, age, scope=None):
         for item in voice_list_results_all:
             member_data[item['member_id']].append(item)
 
-        # Retain complete dict data for each member_id
-        voice_list_results = [item for sublist in member_data.values() if len(sublist) > 1 for item in sublist]
+        # Retain complete dict data for each member_id with different languages
+        voice_list_results = []
+        for member_id, data_list in member_data.items():
+            languages = set()
+            for item in data_list:
+                languages.add(item['language'])
+            if len(data_list) > 1 and len(languages) > 1:
+                voice_list_results.extend(data_list)
 
         logger.info(f"VoiceBank: updated list : {voice_list_results}")
     else:
