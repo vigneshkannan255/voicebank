@@ -60,21 +60,17 @@ def convert_age_to_dob(age):
 def get_context(context):
     context.no_cache = 1
     if frappe.form_dict.language or frappe.form_dict.gender or frappe.form_dict.age or frappe.form_dict.slang:
-        language = sanitize_html(frappe.form_dict.get('language'))
-        gender = sanitize_html(frappe.form_dict.get('gender'))
-        age = sanitize_html(frappe.form_dict.get('age'))
-        slang = sanitize_html(frappe.form_dict.get('slang'))
-        #context.title = _("Search Results for")
-        #context.query = query
-        #context.route = "/voicebank"
+        language = sanitize_html(frappe.form_dict.get('language')) or ""
+        gender = sanitize_html(frappe.form_dict.get('gender')) or ""
+        age = sanitize_html(frappe.form_dict.get('age')) or ""
+        slang = sanitize_html(frappe.form_dict.get('slang')) or ""
         context.results = search(language, gender, slang, age, frappe.form_dict.get('scope'))
         context.update(context.results)
     else:
         context.title = _("Search")
 
 @frappe.whitelist(allow_guest=True)
-def search(language, gender, slang, age, scope=None):
-
+def search(language, gender, slang, age, scope=None):  # Added scope parameter with default None
     date_range = search_users_by_age(age)
     logger.info(f"VoiceBank: date_range {date_range}")
 
@@ -93,7 +89,7 @@ def search(language, gender, slang, age, scope=None):
     logger.info(f"VoiceBank: artist_profile_filters_org: {artist_profile_filters_org}")
 
     voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
-    if "," in language:
+    if language and "," in language:
         lang_list = language.split(",")
         voice_bank_filters['language'] = ['in', lang_list]
 
@@ -111,7 +107,7 @@ def search(language, gender, slang, age, scope=None):
                                                "timestamp", \
                                                "category"])
     
-    if "," in language:
+    if language and "," in language:
         # Create a dictionary to store data for each member_id
         member_data = defaultdict(list)
 
@@ -132,8 +128,6 @@ def search(language, gender, slang, age, scope=None):
     else:
         voice_list_results = voice_list_results_all
 
-
-
     profile_list_results = frappe.get_list("Artist Profile", filters=artist_profile_filters,
                                    fields=["member_id", \
                                            "first_name", \
@@ -152,7 +146,7 @@ def search(language, gender, slang, age, scope=None):
 
     results = []
     if not voice_list_results or not profile_list_results:
-        logger.info(f"VoiceBank: Eaither Profile list or voice list search list are empty")
+        logger.info(f"VoiceBank: Either Profile list or voice list search list are empty")
         results = []
     else:
         for profile in profile_list_results:
@@ -172,4 +166,3 @@ def search(language, gender, slang, age, scope=None):
                     results.append(result)
 
     return { "results" : results }
-
