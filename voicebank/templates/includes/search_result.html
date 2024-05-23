@@ -3,9 +3,11 @@
 {% for data in results %}
 <div class="card">
     <div class="mem-no">
-        <div class="mno"><span class="text-span">M. No.</span>{{data['member_id']}}</div>
-        <input onclick="toggleCheckbox(this)" id="selected_profile_{{ loop.index }}" class="selected_profile hidden" type="checkbox" name="voice_{{ loop.index }}" value="{{data['member_id']}}"/>
-        <svg   xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24" width="24" height="24" class="heartIcon" id="heartIcon_{{ loop.index }}">
+        <div class="mno">
+            <span class="text-span">M. No.</span>{{data['member_id']}}
+        </div>
+        <input onclick="toggleCheckbox(this)" id="selected_profile_{{ loop.index }}" class="selected_profile" hidden type="checkbox" name="voice_{{ loop.index }}" value="{{data['member_id']}}"/>
+        <svg onclick="toggleCheckboxFromIcon(this)" xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24" width="24" height="24" class="heartIcon" id="heartIcon_{{ loop.index }}">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
     </div>
@@ -30,40 +32,30 @@
 {% else %}
 <div class="not-found-error">
     <h3>No Search Found</h3>
-</div> 
+</div>
 {% endif %}
 <script>
- function toggleCheckbox(checkbox) {
-    console.log("1");
-    var heartIcon = checkbox.parentNode.querySelector('.heartIcon');
-    if (checkbox.checked) {
-        heartIcon.setAttribute('fill', '#FF007F');
-    }
-    else 
-{
-        heartIcon.setAttribute('fill', '');
+     function toggleCheckbox(checkbox) {
+        var heartIcon = checkbox.parentNode.querySelector('.heartIcon');
+        if (checkbox.checked) {
+            heartIcon.setAttribute('fill', '#FF0000');
+        } else {
+            heartIcon.setAttribute('fill', '');
+        }
+        var selectedCheckboxes = document.querySelectorAll('.selected_profile:checked');
+        if(selectedCheckboxes.length > 0) {
+            document.getElementById('open-button').classList.remove('hidden');
+        } else {
+            document.getElementById('open-button').classList.add('hidden');
+        } 
     }
 
-var selectedCheckboxes = document.querySelectorAll('.selected_profile:checked');
-if(selectedCheckboxes.length > 0) {
-        document.getElementById('openModalButton').classList.remove('hidden');
-    
-}
-else
-{
-        document.getElementById('openModalButton').classList.add('hidden');
-    
-} 
-}
+    function toggleCheckboxFromIcon(icon) {
+        var checkbox = icon.parentNode.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        toggleCheckbox(checkbox);
+    }
 </script>
-
-
-<!-- //     var selectedCheckboxes = document.querySelectorAll('.selected_profile:checked');
-//     if (selectedCheckboxes.length > 0) {
-//         document.getElementById('openModalButton').classList.remove('hidden');
-//     } else {
-//         document.getElementById('openModalButton').classList.add('hidden');
-//     }
-// } -->
-
-
+    
+    
+    

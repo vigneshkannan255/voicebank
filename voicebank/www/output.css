@@ -3797,10 +3797,208 @@ textarea.w-input, textarea.w-select {
   padding: 20px 20px 10px;
   display: flex;
 }
+.select-field-language{
+  color: var(--elements-webflow-library-neutral--600);
+  border-radius: 5px;
+  width: 175px;
+  max-width: 200px;
+  height: 45px;
+  padding-right: 20px;
+  font-size: 16px;
+  
+}
 
 .filter-panel.top {
   margin-top: 20px;
 }
+
+.form-container {
+  max-width: 300px;
+  padding-top: 0px;
+  padding: 10px;
+  background-color: white;
+  
+}
+.custom-select-wrapper {
+  position: relative;
+  width: 200px;
+  
+}
+
+.select-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px; 
+}
+
+.custom-select {
+  position: relative;
+  cursor: pointer;
+}
+
+.select-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.select-trigger span {
+  font-size: 16px;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #333;
+}
+
+.custom-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-top: none;
+  background-color: #fff;
+  display: none;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.custom-option {
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.custom-option input {
+  margin-right: 10px;
+}
+
+.custom-option:last-child {
+  border-bottom: none;
+}
+
+.custom-option:hover {
+  background-color: #f4f4f9;
+}
+
+.custom-options.show {
+  display: flex;
+}
+
+
+
+.form-container input[type=text], .form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+
+.w-lightbox-active {
+  opacity: .3;
+}
+
+.w-lightbox-thumbnail {
+  background: #222;
+  height: 10vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.w-lightbox-thumbnail-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.w-lightbox-thumbnail .w-lightbox-tall {
+  width: 100%;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.w-lightbox-thumbnail .w-lightbox-wide {
+  height: 100%;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.w-lightbox-spinner {
+  box-sizing: border-box;
+  border: 5px solid rgba(0, 0, 0, .4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
+  animation: .8s linear infinite spin;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.w-lightbox-spinner:after {
+  content: "";
+  border: 3px solid rgba(0, 0, 0, 0);
+  border-bottom-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: -4px;
+  right: -4px;
+}
+
+.w-lightbox-hide {
+  display: none;
+}
+
+.w-lightbox-noscroll {
+  overflow: hidden;
+}
+    
+    
+
 
 .select-field {
   color: var(--elements-webflow-library-neutral--600);
@@ -3810,6 +4008,7 @@ textarea.w-input, textarea.w-select {
   height: 45px;
   padding-right: 20px;
   font-size: 16px;
+  margin-top: 7px;
 }
 
 .submit-button {
@@ -3817,6 +4016,7 @@ textarea.w-input, textarea.w-select {
   border-radius: 5px;
   height: 45px;
   padding-right: 20px;
+  margin-top: 7px;
 }
 
 .form {
@@ -3827,11 +4027,6 @@ textarea.w-input, textarea.w-select {
 
 .form-block {
   margin-bottom: 0;
-}
-
-.select-container {
-  display: flex;
-  gap: 10px; 
 }
 
 .not-found-error{
@@ -3880,6 +4075,20 @@ textarea.w-input, textarea.w-select {
   font-size: 16px;
   font-weight: 700;
 }
+
+.selected_profile{
+  position: relative;
+  
+}
+
+.heartIcon{
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+  
+  
+}
+
 
 .card-body {
   grid-column-gap: 1rem;
@@ -3940,10 +4149,6 @@ textarea.w-input, textarea.w-select {
   margin-top: 10px;
 } */
 
-.heartIcon{
-  cursor: pointer;
-  
-}
 
 .youtube {
   height: 45px;
@@ -3958,9 +4163,30 @@ textarea.w-input, textarea.w-select {
   display: inline-block;
 }
 
+.open-button {
+  background-color: #0c8a4b;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  bottom: 23px;
+  right: 28px;
+  width: 280px;
+}
+
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 5px;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
 .div-block-3 {
   display: flex;
-  text-align: center;
 }
 
 .footer {

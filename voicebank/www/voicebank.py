@@ -8,7 +8,11 @@ frappe.utils.logger.set_log_level("DEBUG")
 logger = frappe.logger("voice_bank", allow_site=True, file_count=50)
 
 def search_users_by_age(age):
-    # default min and max age
+    # Assign default values
+    min_age = 0
+    max_age = 0
+    
+    # Cases to set min_age and max_age
     if age == "r1":
         min_age = 5
         max_age = 10

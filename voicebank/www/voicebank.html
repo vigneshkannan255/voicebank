@@ -64,15 +64,39 @@
                 <div class="filter-panel">
                     <div class="form-block w-form">
                         <div class="select-container">
-                            <select id="language" name="language" class="select-field w-select">
-                                <option value="">Select Language</option>
-                                <option value="Tamil">Tamil</option>
-                                <option value="Telugu">Telugu</option>
-                                <option value="Hindi">Hindi</option>
-                                <option value="Malayalam">Malayalam</option>
-                                <option value="Kannada">Kannada</option>
-                                <option value="English">English</option>
-                            </select>
+                          <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form" data-wf-page-id="6130fc9db35a71f2be742dee" data-wf-element-id="b04be3d4-5931-e6b7-3596-02bd296a2a13">
+                              <div class="custom-select-wrapper">
+                                <input type="text" hidden name="language" id="language" value="">
+                                <div class="custom-select">
+                                  <div class="select-trigger select-field-language w-select" >
+                                    <span>Select Language</span>
+                                    <div class="arrow"></div>
+                                  </div>
+                                  <div class="custom-options">
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="tamil"> Tamil
+                                    </label>
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="Telugu"> Telugu
+                                    </label>
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="Kannadam"> Kannadam
+                                    </label>
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="Malayalam"> Malayalam
+                                    </label>
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="Hindi"> Hindi
+                                    </label>
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="English"> English
+                                    </label>
+                                    <label class="custom-option">
+                                      <input type="checkbox" value="Others"> Others
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
                             <select id="slang" name="slang" class="select-field w-select">
                                 <option value="">Select Slang</option>
                                 <option value="Madurai">Madurai</option>
@@ -92,6 +116,7 @@
                                 <option value="5-10">5 – 10</option>
                                 <option value="10-15">10 - 15</option>
                                 <option value="15-20">15 - 20</option>
+                                <option value="15-20">20 - 25</option>
                                 <option value="25-30">25 - 30</option>
                                 <option value="30-35">30 - 35</option>
                                 <option value="35-40">35 - 40</option>
@@ -110,11 +135,79 @@
                         {% include "voicebank/templates/includes/search_result.html" %}
                     </form>
                 </div>
-                <div class="div-block-3"><a href="#" class="enquiry w-button">Enquiry Now</a></div>
-            </div>
+                <button type="button" id="open-button" class="open-button enquiry w-button div-block-3 hidden" onclick="openForm()">Enquiry now</button>            </div>
         </form>
     </div>
 </section>
+
+<div class="form-popup" id="myForm">
+  <form  class="form-container">
+    <h2>Send Request</h2>
+    <label for="text"><b>Name</b></label>
+    <input type="text" placeholder="Enter Name" name="Name" required>
+
+    <label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" required>
+
+    <label for="text"><b>Phone</b></label>
+    <input type="text" placeholder="Enter Phone" name="psw" required>
+
+    <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
+    <button type="submit" id="myForm" class="btn">Send</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+
+        <div class="footer">
+            <div class="footer-text">© 2024 — South Indian Cine, Television Artistes and Dubbing Artistes Union</div>
+        </div>
+    </div>
+
+<script>
+  
+  function openForm() {
+document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+document.getElementById("myForm").style.display = "none";
+}
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const selectTrigger = document.querySelector('.select-trigger');
+    const customOptions = document.querySelector('.custom-options');
+    const inputField = document.getElementById('language');
+
+    selectTrigger.addEventListener('click', function() {
+      customOptions.classList.toggle('show');
+    });
+    document.addEventListener('click', function(event) {
+      if (!selectTrigger.contains(event.target)) {
+        customOptions.classList.remove('show');
+      }
+    });
+    const checkboxes = document.querySelectorAll('.custom-option input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updateSelectedOptions);
+    });
+
+    function updateSelectedOptions() {
+      const selectedOptions = Array.from(checkboxes)
+        .filter(checkbox => checkbox.checked)
+        .map(checkbox => checkbox.parentElement.textContent.trim());
+      
+      if (selectedOptions.length) {
+        selectTrigger.querySelector('span').textContent = selectedOptions.join(', ');
+        inputField.value = selectedOptions.join(', ');
+
+      } else {
+        selectTrigger.querySelector('span').textContent = 'Select options';
+        inputField.value = '';
+      }
+    }    
+  });
+</script>
 {% endblock %}   
 </body>
 </html>
