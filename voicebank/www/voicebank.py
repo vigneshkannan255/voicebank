@@ -2,17 +2,15 @@ import frappe
 from frappe import _
 from frappe.utils import sanitize_html
 from datetime import datetime, timedelta
-from collections import defaultdict
 
 frappe.utils.logger.set_log_level("DEBUG")
 logger = frappe.logger("voice_bank", allow_site=True, file_count=50)
 
 def search_users_by_age(age):
+    # default min and max age
     # Assign default values
     min_age = 0
     max_age = 0
-    
-    # Cases to set min_age and max_age
     if age == "r1":
         min_age = 5
         max_age = 10
@@ -64,17 +62,21 @@ def convert_age_to_dob(age):
 def get_context(context):
     context.no_cache = 1
     if frappe.form_dict.language or frappe.form_dict.gender or frappe.form_dict.age or frappe.form_dict.slang:
-        language = sanitize_html(frappe.form_dict.get('language')) or ""
-        gender = sanitize_html(frappe.form_dict.get('gender')) or ""
-        age = sanitize_html(frappe.form_dict.get('age')) or ""
-        slang = sanitize_html(frappe.form_dict.get('slang')) or ""
+        language = sanitize_html(frappe.form_dict.get('language'))
+        gender = sanitize_html(frappe.form_dict.get('gender'))
+        age = sanitize_html(frappe.form_dict.get('age'))
+        slang = sanitize_html(frappe.form_dict.get('slang'))
+        #context.title = _("Search Results for")
+        #context.query = query
+        #context.route = "/voicebank"
         context.results = search(language, gender, slang, age, frappe.form_dict.get('scope'))
         context.update(context.results)
     else:
         context.title = _("Search")
 
 @frappe.whitelist(allow_guest=True)
-def search(language, gender, slang, age, scope=None):  # Added scope parameter with default None
+def search(language, gender, slang, age, scope=None):
+
     date_range = search_users_by_age(age)
     logger.info(f"VoiceBank: date_range {date_range}")
 
@@ -93,17 +95,13 @@ def search(language, gender, slang, age, scope=None):  # Added scope parameter w
     logger.info(f"VoiceBank: artist_profile_filters_org: {artist_profile_filters_org}")
 
     voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
-    if language and "," in language:
-        lang_list = language.split(",")
-        voice_bank_filters['language'] = ['in', lang_list]
-
     artist_profile_filters = { k: v for k, v in artist_profile_filters_org.items() if v }
     logger.info(f"VoiceBank: Pre-processed filter value, which is removing empty fields")
     logger.info(f"VoiceBank: voice_bank_filters: {voice_bank_filters}")
     logger.info(f"VoiceBank: artist_profile_filters: {artist_profile_filters}")
 
-    voice_list_results_all = frappe.get_list("Voice Upload", filters=voice_bank_filters,
-                                    fields=["member_id", \
+    voice_list_results = frappe.get_list("Voice Upload", filters=voice_bank_filters,
+                                       fields=["member_id", \
                                                "language", \
                                                "slang", \
                                                "voice", \
@@ -111,27 +109,6 @@ def search(language, gender, slang, age, scope=None):  # Added scope parameter w
                                                "timestamp", \
                                                "category"])
     
-    if language and "," in language:
-        # Create a dictionary to store data for each member_id
-        member_data = defaultdict(list)
-
-        # Group data by member_id
-        for item in voice_list_results_all:
-            member_data[item['member_id']].append(item)
-
-        # Retain complete dict data for each member_id with different languages
-        voice_list_results = []
-        for member_id, data_list in member_data.items():
-            languages = set()
-            for item in data_list:
-                languages.add(item['language'])
-            if len(data_list) > 1 and len(languages) > 1:
-                voice_list_results.extend(data_list)
-
-        logger.info(f"VoiceBank: updated list : {voice_list_results}")
-    else:
-        voice_list_results = voice_list_results_all
-
     profile_list_results = frappe.get_list("Artist Profile", filters=artist_profile_filters,
                                    fields=["member_id", \
                                            "first_name", \
@@ -150,7 +127,7 @@ def search(language, gender, slang, age, scope=None):  # Added scope parameter w
 
     results = []
     if not voice_list_results or not profile_list_results:
-        logger.info(f"VoiceBank: Either Profile list or voice list search list are empty")
+        logger.info(f"VoiceBank: Eaither Profile list or voice list search list are empty")
         results = []
     else:
         for profile in profile_list_results:

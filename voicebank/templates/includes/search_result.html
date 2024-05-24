@@ -43,17 +43,32 @@
             heartIcon.setAttribute('fill', '');
         }
         var selectedCheckboxes = document.querySelectorAll('.selected_profile:checked');
+        var Forms = document.querySelectorAll('.form-popup');
         if(selectedCheckboxes.length > 0) {
             document.getElementById('open-button').classList.remove('hidden');
+            document.getElementById('myForm').classList.remove('hidden');
         } else {
             document.getElementById('open-button').classList.add('hidden');
+            document.getElementById('myForm').classList.add('hidden');
         } 
+        logSelectedProfiles();
     }
 
     function toggleCheckboxFromIcon(icon) {
         var checkbox = icon.parentNode.querySelector('input[type="checkbox"]');
         checkbox.checked = !checkbox.checked;
         toggleCheckbox(checkbox);
+    }
+    function logSelectedProfiles() {
+        var selectedCheckboxes = document.querySelectorAll('.selected_profile:checked');
+        var selectedProfiles = [];
+        selectedCheckboxes.forEach(function(checkbox) {
+        selectedProfiles.push(checkbox.value);
+        });
+        console.log("Selected Profiles:", selectedProfiles);
+        var inputField = document.getElementById('artist_member_id_list');
+        inputField.value = selectedProfiles.join(',');
+        
     }
 </script>
     
