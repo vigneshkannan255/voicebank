@@ -153,7 +153,7 @@
     <input type="text" placeholder="Enter Phone" id="phone_number" name="phone_number" required>
 
     <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
-    <button type="button" id="myForm" onclick="submit_enquiry_form()" class="btn">Send</button>
+    <button type="submit" id="myForm" onclick="submit_enquiry_form()" class="btn">Send</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
   </form>
 </div>
@@ -162,6 +162,37 @@
   
   function openForm() {
 document.getElementById("myForm").style.display = "block";
+function submit_enquiry_form(){
+  console.log("submit button worked")
+    frappe.call({
+                method: 'voicebank.www.enquery.search',
+                args: {
+                  cust_name: document.getElementById('cust_name').value,
+                  email_id: document.getElementById('email_id').value,
+                  phone_number: document.getElementById('phone_number').value,
+                    member_id_list: document.getElementById('artist_member_id_list').value
+                },
+                callback: function(r) {
+                    $(r.message.results).appendTo('.enquery-response');
+                    $('.myForm').toggleClass('hidden', !!!r.message.has_more);
+                }
+	     });
+
+              alert('Form submitted successfully!');
+              modal.classList.add('hidden');
+              overlay.classList.add('hidden');
+          }
+  
+      closeButton.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          overlay.classList.add('hidden');
+      });
+  
+      overlay.addEventListener('click', () => {
+          modal.classList.add('hidden');
+          overlay.classList.add('hidden');
+      });
+
 }
 
 function closeForm() {
@@ -201,37 +232,6 @@ document.getElementById("myForm").style.display = "none";
       }
     }    
   });
-function submit_enquiry_form(){
-  console.log("submit button worked")
-    frappe.call({
-                method: 'voicebank.www.enquery.search',
-                args: {
-                  cust_name: document.getElementById('cust_name').value,
-                  email_id: document.getElementById('email_id').value,
-                  phone_number: document.getElementById('phone_number').value,
-                    member_id_list: document.getElementById('artist_member_id_list').value
-                },
-                callback: function(r) {
-                    $(r.message.results).appendTo('.enquery-response');
-                    $('.myForm').toggleClass('hidden', !!!r.message.has_more);
-                }
-	     });
-
-              alert('Form submitted successfully!');
-              modal.classList.add('hidden');
-              overlay.classList.add('hidden');
-          }
-  
-      closeButton.addEventListener('click', () => {
-          modal.classList.add('hidden');
-          overlay.classList.add('hidden');
-      });
-  
-      overlay.addEventListener('click', () => {
-          modal.classList.add('hidden');
-          overlay.classList.add('hidden');
-      });
-
 
 </script>
 {% endblock %}   
