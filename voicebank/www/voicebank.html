@@ -100,7 +100,7 @@
                             <select id="slang" name="slang" class="select-field w-select">
                                 <option value="">Select Slang</option>
                                 <option value="Madurai">Madurai</option>
-                                <option value="Chennai">Chennai</option>
+                                <option value="Chennai">Madras</option>
                                 <option value="Coimbatore">Coimbatore</option>
                                 <option value="Nagarkovil">Nagarkovil</option>
                                 <option value="General">General</option>
@@ -141,98 +141,116 @@
 </section>
 
 <div class="form-popup" id="myForm">
-  <form  class="form-container">
+  <form class="form-container" id="enquiryForm">
     <h2>Send Request</h2>
-    <label for="text"><b>Name</b></label>
+    <label for="cust_name"><b>Name</b></label>
     <input type="text" placeholder="Enter Name" id="cust_name" name="cust_name" required>
 
-    <label for="email"><b>Email</b></label>
+    <label for="email_id"><b>Email</b></label>
     <input type="text" placeholder="Enter Email" id="email_id" name="email_id" required>
 
-    <label for="text"><b>Phone</b></label>
+    <label for="phone_number"><b>Phone</b></label>
     <input type="text" placeholder="Enter Phone" id="phone_number" name="phone_number" required>
 
     <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
-    <button type="submit" id="myForm" onsubmit="submit_enquiry_form()" class="btn">Send</button>
+    <button type="submit" class="btn" id="sendButton">Send</button>
     <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
   </form>
 </div>
 
 <script>
-  
   function openForm() {
-document.getElementById("myForm").style.display = "block";
-function submit_enquiry_form(){
-  console.log("submit button worked")
-    frappe.call({
-                method: 'voicebank.www.enquery.search',
-                args: {
-                  cust_name: document.getElementById('cust_name').value,
-                  email_id: document.getElementById('email_id').value,
-                  phone_number: document.getElementById('phone_number').value,
-                    member_id_list: document.getElementById('artist_member_id_list').value
-                },
-                callback: function(r) {
-                    $(r.message.results).appendTo('.enquery-response');
-                    $('.myForm').toggleClass('hidden', !!!r.message.has_more);
-                }
-	     });
+    document.getElementById("myForm").style.display = "block";
+  }
 
-              alert('Form submitted successfully!');
-              modal.classList.add('hidden');
-              overlay.classList.add('hidden');
-          }
-  
-      closeButton.addEventListener('click', () => {
-          modal.classList.add('hidden');
-          overlay.classList.add('hidden');
-      });
-  
-      overlay.addEventListener('click', () => {
-          modal.classList.add('hidden');
-          overlay.classList.add('hidden');
-      });
-
-}
-
-function closeForm() {
-document.getElementById("myForm").style.display = "none";
-}
+  function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+  }
 
   document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('sendButton').addEventListener('click', submit_enquiry_form);
+
     const selectTrigger = document.querySelector('.select-trigger');
     const customOptions = document.querySelector('.custom-options');
     const inputField = document.getElementById('language');
 
-    selectTrigger.addEventListener('click', function() {
-      customOptions.classList.toggle('show');
-    });
-    document.addEventListener('click', function(event) {
-      if (!selectTrigger.contains(event.target)) {
-        customOptions.classList.remove('show');
-      }
-    });
-    const checkboxes = document.querySelectorAll('.custom-option input[type="checkbox"]');
-    checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', updateSelectedOptions);
-    });
+    if (selectTrigger && customOptions) {
+      selectTrigger.addEventListener('click', function() {
+        customOptions.classList.toggle('show');
+      });
 
-    function updateSelectedOptions() {
-      const selectedOptions = Array.from(checkboxes)
-        .filter(checkbox => checkbox.checked)
-        .map(checkbox => checkbox.parentElement.textContent.trim());
-      
-      if (selectedOptions.length) {
-        selectTrigger.querySelector('span').textContent = selectedOptions.join(', ');
-        inputField.value = selectedOptions.join(', ');
+      document.addEventListener('click', function(event) {
+        if (!selectTrigger.contains(event.target)) {
+          customOptions.classList.remove('show');
+        }
+      });
 
-      } else {
-        selectTrigger.querySelector('span').textContent = 'Select options';
-        inputField.value = '';
+      const checkboxes = document.querySelectorAll('.custom-option input[type="checkbox"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSelectedOptions);
+      });
+
+      function updateSelectedOptions() {
+        const selectedOptions = Array.from(checkboxes)
+          .filter(checkbox => checkbox.checked)
+          .map(checkbox => checkbox.parentElement.textContent.trim());
+
+        if (selectedOptions.length) {
+          selectTrigger.querySelector('span').textContent = selectedOptions.join(', ');
+          inputField.value = selectedOptions.join(', ');
+        } else {
+          selectTrigger.querySelector('span').textContent = 'Select options';
+          inputField.value = '';
+        }
       }
-    }    
+    }
   });
 
+  function submit_enquiry_form() {
+    const form = document.getElementById('enquiryForm');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    console.log("submit button worked");
+
+    frappe.call({
+      method: 'voicebank.www.enquery.search',
+      args: {
+        cust_name: document.getElementById('cust_name').value,
+        email_id: document.getElementById('email_id').value,
+        phone_number: document.getElementById('phone_number').value,
+        member_id_list: document.getElementById('artist_member_id_list').value
+      },
+      callback: function(r) {
+        $(r.message.results).appendTo('.enquery-response');
+        $('.myForm').toggleClass('hidden', !!!r.message.has_more);
+      }
+    });
+
+    alert('Form submitted successfully!');
+    closeForm();
+  }
+
+  const closeButton = document.querySelector('.btn.cancel');
+  const overlay = document.querySelector('.overlay');
+
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      document.getElementById("myForm").style.display = "none";
+      if (overlay) {
+        overlay.classList.add('hidden');
+      }
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      document.getElementById("myForm").style.display = "none";
+      overlay.classList.add('hidden');
+    });
+  }
 </script>
 {% endblock %}   
 </body>
