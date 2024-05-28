@@ -66,8 +66,10 @@
         selectedProfiles.push(checkbox.value);
         });
         console.log("Selected Profiles:", selectedProfiles);
+        var rm_duplicate_selectedProfiles=[...new Set(selectedProfiles)];
+        console.log("Selected Profiles:", rm_duplicate_selectedProfiles);
         var inputField = document.getElementById('artist_member_id_list');
-        inputField.value = selectedProfiles.join(',');
+        inputField.value = rm_duplicate_selectedProfiles.join(',');
         
     }
 </script>
