@@ -3766,9 +3766,10 @@ textarea.w-input, textarea.w-select {
   background-color: #f3f3f3;
   max-width: none;
   max-height: 1000px;
-  margin-top: 86px;
+  margin-top: 132px;
   display: flex;
 }
+
 
 .left-panel {
   width: 350px;
