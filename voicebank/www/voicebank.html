@@ -123,7 +123,7 @@
                                 <option value="r8">40 - 45</option>
                                 <option value="r9">45 - 50</option>
                             </select>
-                            <button type="submit" class="submit-button w-button">Search</button>
+                            <button type="submit"class="submit-button w-button">Search</button>
                             {% if frappe.form_dict.scope %}
                             <input type="text" data-wait="Please wait..." class="submit-button w-button" name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
                             {% endif %}
@@ -175,16 +175,17 @@
     const inputField = document.getElementById('language');
 
     if (selectTrigger && customOptions) {
-      selectTrigger.addEventListener('click', function() {
-        customOptions.classList.toggle('show');
-      });
+        selectTrigger.addEventListener('click', function(event) {
+          event.stopPropagation();
+          customOptions.classList.toggle('show');
+        });
 
-      document.addEventListener('click', function(event) {
-        if (!selectTrigger.contains(event.target)) {
-          customOptions.classList.remove('show');
-        }
-      });
-
+        document.addEventListener('click', function(event) {
+          if (!selectTrigger.contains(event.target) && !customOptions.contains(event.target)) {
+            customOptions.classList.remove('show');
+          }
+        });
+        
       const checkboxes = document.querySelectorAll('.custom-option input[type="checkbox"]');
       checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateSelectedOptions);
