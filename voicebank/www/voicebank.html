@@ -61,102 +61,133 @@
                 </div>
             </div>
             <div class="right-panel">
-                <div class="filter-panel">
-                    <div class="form-block w-form">
-                        <div class="select-container">
-                          <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form" data-wf-page-id="6130fc9db35a71f2be742dee" data-wf-element-id="b04be3d4-5931-e6b7-3596-02bd296a2a13">
-                              <div class="custom-select-wrapper">
-                                <input type="text" hidden name="language" id="language" value="">
-                                <div class="custom-select">
-                                  <div class="select-trigger select-field-language w-select" >
-                                    <span>Select Language</span>
-                                    <div class="arrow"></div>
-                                  </div>
-                                  <div class="custom-options">
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="tamil"> Tamil
-                                    </label>
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="Telugu"> Telugu
-                                    </label>
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="Kannadam"> Kannada
-                                    </label>
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="Malayalam"> Malayalam
-                                    </label>
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="Hindi"> Hindi
-                                    </label>
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="English"> English
-                                    </label>
-                                    <label class="custom-option">
-                                      <input type="checkbox" value="Others"> Others
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                            <select id="slang" name="slang" class="select-field w-select">
-                                <option value="">Select Slang</option>
-                                <option value="Madurai">Madurai</option>
-                                <option value="Chennai">Madras</option>
-                                <option value="Coimbatore">Coimbatore</option>
-                                <option value="Nagarkovil">Nagarkovil</option>
-                                <option value="General">General</option>
-                            </select>
-                            <select id="gender" name="gender" class="select-field w-select">
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Others">Others</option>
-                            </select>
-                            <select id="age" name="age" class="select-field w-select">
-                                <option value="">Select Age</option>
-                                <option value="r1">5 – 10</option>
-                                <option value="r2">10 - 15</option>
-                                <option value="r3">15 - 20</option>
-                                <option value="r4">20 - 25</option>
-                                <option value="r5">25 - 30</option>
-                                <option value="r6">30 - 35</option>
-                                <option value="r7">35 - 40</option>
-                                <option value="r8">40 - 45</option>
-                                <option value="r9">45 - 50</option>
-                            </select>
-                            <button type="submit"class="submit-button w-button">Search</button>
-                            {% if frappe.form_dict.scope %}
-                            <input type="text" data-wait="Please wait..." class="submit-button w-button" name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
-                            {% endif %}
+              <div class="form-block w-form">
+                <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form" data-wf-page-id="6130fc9db35a71f2be742dee" data-wf-element-id="b04be3d4-5931-e6b7-3596-02bd296a2a13">
+                  <div class="custom-select-wrapper">
+                    <input type="text" hidden name="language" id="language" value="">
+                    <div class="flex-div">
+                      <div class="form-container">
+                        <h2>Select Language</h2>
+                        <div class="checkbox-group">
+                          <label class="custom-option">
+                            <input type="checkbox" value="tamil"> Tamil
+                          </label>
+                          <label class="custom-option">
+                            <input type="checkbox" value="Telugu"> Telugu
+                          </label>
+                          <label class="custom-option">
+                            <input type="checkbox" value="Kannadam"> Kannada
+                          </label>
+                          <label class="custom-option">
+                            <input type="checkbox" value="Malayalam"> Malayalam
+                          </label>
+                          <label class="custom-option">
+                            <input type="checkbox" value="Hindi"> Hindi
+                          </label>
+                          <label class="custom-option">
+                            <input type="checkbox" value="English"> English
+                          </label>
+                          <label class="custom-option">
+                            <input type="checkbox" value="Others"> Others
+                          </label>
                         </div>
+                      </div>
+                      <div class="form-container">
+                        <h2>Select Slang</h2>
+                        <div id="slang" name="slang" class="checkbox-group">
+                          <label>
+                            <input type="checkbox" value="Madurai"> Madurai
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="Madras"> Madras
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="Coimbatore"> Coimbatore
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="Nagarkovil"> Nagarkovil
+                          </label>
+                          <label>
+                            <input type="checkbox" value="General"> General
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-container">
+                        <h2>Select Gender</h2>
+                        <div id="gender" name="gender" class="checkbox-group">
+                          <label>
+                            <input type="checkbox"  value="Male"> Male
+                          </label>
+                          <label>
+                            <input type="checkbox" value="Female"> Female
+                          </label>
+                          <label>
+                            <input type="checkbox" value="Others"> Others
+                          </label>
+                        </div>
+                      </div>
+                      <div class="form-container">
+                        <h2>Select Age</h2>
+                        <div id="age" name="age" class="checkbox-group">
+                          <label>
+                            <input type="checkbox"  value="r1"> 5 – 10
+                          </label>
+                          <label>
+                            <input type="checkbox" value="r2"> 10 – 15
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r3"> 15 – 20
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r4"> 20 – 25
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r5"> 25 – 30
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r6"> 30 – 35
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r7"> 35 – 40
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r8"> 40 – 45
+                          </label>
+                          <label>
+                            <input type="checkbox"  value="r9"> 45 – 50
+                          </label>
+                        </div>
+                      </div>
                     </div>
+                    <button type="submit"class="submit-button w-button">Search</button>
+                    {% if frappe.form_dict.scope %}
+                    <input type="text" data-wait="Please wait..." class="submit-button w-button" name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
+                    {% endif %}
+                  </div>
                 </div>
-                <div class="search-result">
-                    <form>
-                        {% include "voicebank/templates/includes/search_result.html" %}
-                    </form>
-                </div>
-                <button type="button" id="open-button" class="open-button enquiry w-button div-block-3 hidden" onclick="openForm()">Enquiry now</button>            </div>
-        </form>
-    </div>
-</section>
-
-<div class="form-popup" id="myForm">
-  <form class="form-container" id="enquiryForm">
-    <h2>Send Request</h2>
-    <label for="cust_name"><b>Name</b></label>
-    <input type="text" placeholder="Enter Name" id="cust_name" name="cust_name" required>
-
-    <label for="email_id"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" id="email_id" name="email_id" required>
-
-    <label for="phone_number"><b>Phone</b></label>
-    <input type="text" placeholder="Enter Phone" id="phone_number" name="phone_number" required>
-
-    <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
-    <button type="submit" class="btn" id="sendButton">Send</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
+              </div>
+              <div id="searchresults" class="search-result" style="display: none;">
+                <form>
+                    {% include "voicebank/templates/includes/search_result.html" %}
+                </form>
+            </div>
+              <button type="button" id="open-button" class="open-button enquiry w-button div-block-3 hidden" onclick="openForm()">Enquiry now</button>
+            </section>
+          </form>
+          <div class="form-popup" id="myForm">
+            <form class="form-container" id="enquiryForm">
+              <h2>Send Request</h2>
+              <label for="cust_name"><b>Name</b></label>
+              <input type="text" placeholder="Enter Name" id="cust_name" name="cust_name" required>
+              <label for="email_id"><b>Email</b></label>
+              <input type="text" placeholder="Enter Email" id="email_id" name="email_id" required>
+              <label for="phone_number"><b>Phone</b></label>
+              <input type="text" placeholder="Enter Phone" id="phone_number" name="phone_number" required>
+              <input type="hidden" id="artist_member_id_list" name="artist_member_id_list" value="">
+              <button type="submit" class="btn" id="sendButton">Send</button>
+              <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
 
 <script>
   function openForm() {
@@ -207,17 +238,16 @@
     }
   });
 
-  function submit_enquiry_form() {
+  function submit_enquiry_form(event) {
+    event.preventDefault();
     const form = document.getElementById('enquiryForm');
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
-    console.log("submit button worked");
-
     frappe.call({
-      method: 'voicebank.www.enquery.search',
+      method: 'voicebank.www.enquiry.search',
       args: {
         cust_name: document.getElementById('cust_name').value,
         email_id: document.getElementById('email_id').value,
@@ -225,13 +255,14 @@
         member_id_list: document.getElementById('artist_member_id_list').value
       },
       callback: function(r) {
-        $(r.message.results).appendTo('.enquery-response');
-        $('.myForm').toggleClass('hidden', !!!r.message.has_more);
+        if (r.message.success) {
+          alert('Form submitted successfully!');
+          closeForm();
+        } else {
+          alert('There was an error submitting the form. Please try again.');
+        }
       }
     });
-
-    alert('Form submitted successfully!');
-    closeForm();
   }
 
   const closeButton = document.querySelector('.btn.cancel');
