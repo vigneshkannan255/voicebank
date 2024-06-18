@@ -3763,7 +3763,6 @@ textarea.w-input, textarea.w-select {
 }
 
 .body-panel {
-  background-color: #f3f3f3;
   max-width: none;
   max-height: 1000px;
   margin-top: 132px;
@@ -3772,8 +3771,9 @@ textarea.w-input, textarea.w-select {
 
 
 .left-panel {
+  background-color: #f3f3f3;
   width: 350px;
-  height: 100vh;
+  height: calc(100% - 100px);
   padding: 20px;
 }
 
@@ -3871,28 +3871,6 @@ button:hover {
   background-color: white;
   
 }
-.custom-select-wrapper {
-  position: relative;
-  width: 200px;
-  
-}
-
-.select-container {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px; 
-}
-
-.custom-select {
-  position: relative;
-  cursor: pointer;
-}
-
-
-.select-trigger span {
-  font-size: 16px;
-}
-
 
 .custom-option input {
   margin-right: 10px;
@@ -4037,6 +4015,10 @@ button:hover {
   cursor: pointer;
   font-size: 16px;
     
+}
+
+.search-result{
+  padding-left: 80px;
 }
 
 .form {

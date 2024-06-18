@@ -18,6 +18,7 @@
         frappe.ready(function() {
             $('#searchForm').on('submit', function(event) {
                 event.preventDefault(); // Prevent default form submission
+                console.log("language printed");
 
                 frappe.call({
                     method: 'voicebank.www.voicebank.search',
@@ -31,6 +32,7 @@
                         $('.search-result').html(''); // Clear previous results
                         $(r.message.results).appendTo('.search-result');
                         $('.btn-more').toggleClass('hidden', !!!r.message.has_more);
+                        console.log("backend worked"); // Added console log here
                     }
                 });
             });
@@ -61,14 +63,12 @@
                 </div>
             </div>
             <div class="right-panel">
-              <div class="form-block w-form">
                 <form id="email-form" name="email-form" data-name="Email Form" method="get" class="form" data-wf-page-id="6130fc9db35a71f2be742dee" data-wf-element-id="b04be3d4-5931-e6b7-3596-02bd296a2a13">
-                  <div class="custom-select-wrapper">
-                    <input type="text" hidden name="language" id="language" value="">
                     <div class="flex-div">
                       <div class="form-container">
                         <h2>Select Language</h2>
                         <div class="checkbox-group">
+                          <input type="text" hidden name="language" id="language" value="">
                           <label class="custom-option">
                             <input type="checkbox" value="tamil"> Tamil
                           </label>
@@ -76,7 +76,7 @@
                             <input type="checkbox" value="Telugu"> Telugu
                           </label>
                           <label class="custom-option">
-                            <input type="checkbox" value="Kannadam"> Kannada
+                            <input type="checkbox" value="Kannada"> Kannada
                           </label>
                           <label class="custom-option">
                             <input type="checkbox" value="Malayalam"> Malayalam
@@ -94,7 +94,8 @@
                       </div>
                       <div class="form-container">
                         <h2>Select Slang</h2>
-                        <div id="slang" name="slang" class="checkbox-group">
+                        <div class="checkbox-group">
+                          <input type="text" hidden name="slang" id="slang" value="">
                           <label>
                             <input type="checkbox" value="Madurai"> Madurai
                           </label>
@@ -114,7 +115,8 @@
                       </div>
                       <div class="form-container">
                         <h2>Select Gender</h2>
-                        <div id="gender" name="gender" class="checkbox-group">
+                        <div class="checkbox-group">
+                          <input type="text" hidden name="gender" id="gender" value="">
                           <label>
                             <input type="checkbox"  value="Male"> Male
                           </label>
@@ -128,7 +130,8 @@
                       </div>
                       <div class="form-container">
                         <h2>Select Age</h2>
-                        <div id="age" name="age" class="checkbox-group">
+                        <div class="checkbox-group">
+                          <input type="text" hidden name="age" id="age" value="">
                           <label>
                             <input type="checkbox"  value="r1"> 5 – 10
                           </label>
@@ -159,21 +162,22 @@
                         </div>
                       </div>
                     </div>
-                    <button type="submit"class="submit-button w-button">Search</button>
+                    <button onclick="submitbutton()" type="submit"class="submit-button w-button">Search</button>
                     {% if frappe.form_dict.scope %}
                     <input type="text" data-wait="Please wait..." class="submit-button w-button" name="scope" value="{{ frappe.utils.escape_html(frappe.form_dict.scope) }}">
                     {% endif %}
-                  </div>
+                    <div id="searchresults" class="search-result">
+                  <form>
+                      {% include "voicebank/templates/includes/search_result.html" %}
+                  </form>
                 </div>
-              </div>
-              <div id="searchresults" class="search-result" style="display: none;">
-                <form>
-                    {% include "voicebank/templates/includes/search_result.html" %}
-                </form>
-            </div>
-              <button type="button" id="open-button" class="open-button enquiry w-button div-block-3 hidden" onclick="openForm()">Enquiry now</button>
+                <button  type="button" id="open-button" class="open-button enquiry w-button div-block-3 hidden" onclick="openForm()">Enquiry now</button>
+              </form>
             </section>
-          </form>
+          </div>
+        </div>
+      </div>
+          
           <div class="form-popup" id="myForm">
             <form class="form-container" id="enquiryForm">
               <h2>Send Request</h2>
@@ -188,7 +192,13 @@
               <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
             </form>
           </div>
+          <script>
 
+    function submitbutton(){
+    console.log("submitbutton worked");
+
+  }
+          </script>
 <script>
   function openForm() {
     document.getElementById("myForm").style.display = "block";
@@ -201,53 +211,35 @@
   document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sendButton').addEventListener('click', submit_enquiry_form);
 
-    const selectTrigger = document.querySelector('.select-trigger');
-    const customOptions = document.querySelector('.custom-options');
-    const inputField = document.getElementById('language');
+    const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', updateSelectedOptions);
+    });
 
-    if (selectTrigger && customOptions) {
-        selectTrigger.addEventListener('click', function(event) {
-          event.stopPropagation();
-          customOptions.classList.toggle('show');
-        });
-
-        document.addEventListener('click', function(event) {
-          if (!selectTrigger.contains(event.target) && !customOptions.contains(event.target)) {
-            customOptions.classList.remove('show');
-          }
-        });
-        
-      const checkboxes = document.querySelectorAll('.custom-option input[type="checkbox"]');
-      checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateSelectedOptions);
-      });
-
-      function updateSelectedOptions() {
-        const selectedOptions = Array.from(checkboxes)
-          .filter(checkbox => checkbox.checked)
-          .map(checkbox => checkbox.parentElement.textContent.trim());
-
-        if (selectedOptions.length) {
-          selectTrigger.querySelector('span').textContent = selectedOptions.join(', ');
-          inputField.value = selectedOptions.join(', ');
-        } else {
-          selectTrigger.querySelector('span').textContent = 'Select options';
-          inputField.value = '';
-        }
-      }
+    function updateSelectedOptions() {
+      const languages = Array.from(document.querySelectorAll('.form-container:nth-child(1) .checkbox-group input[type="checkbox"]:checked')).map(cb => cb.value);
+      const slangs = Array.from(document.querySelectorAll('.form-container:nth-child(2) .checkbox-group input[type="checkbox"]:checked')).map(cb => cb.value);
+      const genders = Array.from(document.querySelectorAll('.form-container:nth-child(3) .checkbox-group input[type="checkbox"]:checked')).map(cb => cb.value);
+      const ages = Array.from(document.querySelectorAll('.form-container:nth-child(4) .checkbox-group input[type="checkbox"]:checked')).map(cb => cb.value);
+      
+      document.getElementById('language').value = languages.join(', ');
+      document.getElementById('slang').value = slangs.join(', ');
+      document.getElementById('gender').value = genders.join(', ');
+      document.getElementById('age').value = ages.join(', ');
     }
   });
 
-  function submit_enquiry_form(event) {
-    event.preventDefault();
+  function submit_enquiry_form() {
     const form = document.getElementById('enquiryForm');
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
+    console.log("submit button worked");
+
     frappe.call({
-      method: 'voicebank.www.enquiry.search',
+      method: 'voicebank.www.enquery.search',
       args: {
         cust_name: document.getElementById('cust_name').value,
         email_id: document.getElementById('email_id').value,
@@ -255,14 +247,13 @@
         member_id_list: document.getElementById('artist_member_id_list').value
       },
       callback: function(r) {
-        if (r.message.success) {
-          alert('Form submitted successfully!');
-          closeForm();
-        } else {
-          alert('There was an error submitting the form. Please try again.');
-        }
+        $(r.message.results).appendTo('.enquery-response');
+        $('.myForm').toggleClass('hidden', !!!r.message.has_more);
       }
     });
+
+    alert('Form submitted successfully!');
+    closeForm();
   }
 
   const closeButton = document.querySelector('.btn.cancel');
