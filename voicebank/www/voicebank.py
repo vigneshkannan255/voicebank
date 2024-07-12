@@ -8,54 +8,41 @@ frappe.utils.logger.set_log_level("DEBUG")
 logger = frappe.logger("voice_bank", allow_site=True, file_count=50)
 
 def search_users_by_age(age):
-    # default min and max age
-    if age == "r1":
-        min_age = 5
-        max_age = 10
-    elif age == "r2":
-        min_age = 10
-        max_age = 15
-    elif age == "r3":
-        min_age = 15
-        max_age = 20
-    elif age == "r4":
-        min_age = 20
-        max_age = 25
-    elif age == "r5":
-        min_age = 25
-        max_age = 30
-    elif age == "r6":
-        min_age = 30
-        max_age = 35
-    elif age == "r7":
-        min_age = 35
-        max_age = 40
-    elif age == "r8":
-        min_age = 40
-        max_age = 45
-    elif age == "r9":
-        min_age = 45
-        max_age = 50
+    if not age:
+        logger.error("VoiceBank: age parameter is missing")
+        return None
 
-    date_range = ""
-    if age:
+    try:
+        age_list1 = age.split(",")
+        age_list2 = age_list1[0].split("-")[0]
+        age_list3 = age_list1[-1].split("-")[1]
+
+        logger.info(f"VoiceBank: age_input_list1: {age_list1}")
+        logger.info(f"VoiceBank: age_input_list2: {age_list2}")
+        logger.info(f"VoiceBank: age_input_list3: {age_list3}")
+
+        min_age = int(age_list2)
+        max_age = int(age_list3)
+
         min_date = convert_age_to_dob(min_age)
         max_date = convert_age_to_dob(max_age)
-        # Convert datetime object to string of (YY-MM-DD) format
+
         min_date = min_date.strftime('%Y-%m-%d')
         max_date = max_date.strftime('%Y-%m-%d')
-    
-        # Example for date range ['2020-04-01', '2021-03-31']
+
         date_range = ['between', [max_date, min_date]]
+        return date_range
+    
+    except (IndexError, ValueError) as e:
+        logger.error(f"VoiceBank: Error processing age parameter: {e}")
+        return None
 
-    return date_range
-
-# Function to search users by age
 def convert_age_to_dob(age):
     current_date = datetime.now()
     dob = current_date - timedelta(days=365.25 * age)
     logger.info(f"VoiceBank: dob.date(): {dob.date()}")
     return dob.date()
+
 
 def get_context(context):
     context.no_cache = 1
@@ -74,30 +61,41 @@ def get_context(context):
 
 @frappe.whitelist(allow_guest=True)
 def search(language, gender, slang, age, scope=None):
-
     date_range = search_users_by_age(age)
     logger.info(f"VoiceBank: date_range {date_range}")
+   
+    # Handle multiple values for language, slang, gender, and age
+    language_filter = { k: v for k, v in {"language": language, "slang": slang}.items() if v }
+    if "," in language:
+        lang_list = language.split(",")
+        language_filter['language'] = ['in', lang_list]
+    if "," in slang:
+        slang_list = slang.split(",")
+        language_filter['slang'] = ['in', slang_list]
+
+    # Initialize artist_profile_filters_org
+    artist_profile_filters_org = {} 
+
+    # Handle multiple values for gender
+    if "," in gender:
+        gender_list = gender.split(",")
+        artist_profile_filters_org['gender'] = ['in', gender_list]
+    elif gender:
+        artist_profile_filters_org['gender'] = gender
+    
+    artist_profile_filters_org['date_of_birth'] = date_range
 
     voice_bank_filters_org = {
-        "language": language,
-        "slang": slang
+        **language_filter,
     }
 
-    artist_profile_filters_org = {
-        "gender": gender,
-        "date_of_birth": date_range
-    }
+    artist_profile_filters = { k: v for k, v in artist_profile_filters_org.items() if v }
+    voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
 
     logger.info(f"VoiceBank: Original Value from Search filter")
     logger.info(f"VoiceBank: voice_bank_filters_org: {voice_bank_filters_org}")
     logger.info(f"VoiceBank: artist_profile_filters_org: {artist_profile_filters_org}")
 
-    voice_bank_filters = { k: v for k, v in voice_bank_filters_org.items() if v }
-    if "," in language:
-        lang_list = language.split(",")
-        voice_bank_filters['language'] = ['in', lang_list]
-
-    artist_profile_filters = { k: v for k, v in artist_profile_filters_org.items() if v }
     logger.info(f"VoiceBank: Pre-processed filter value, which is removing empty fields")
     logger.info(f"VoiceBank: voice_bank_filters: {voice_bank_filters}")
     logger.info(f"VoiceBank: artist_profile_filters: {artist_profile_filters}")
@@ -132,8 +130,6 @@ def search(language, gender, slang, age, scope=None):
     else:
         voice_list_results = voice_list_results_all
 
-
-
     profile_list_results = frappe.get_list("Artist Profile", filters=artist_profile_filters,
                                    fields=["member_id", \
                                            "first_name", \
@@ -152,7 +148,7 @@ def search(language, gender, slang, age, scope=None):
 
     results = []
     if not voice_list_results or not profile_list_results:
-        logger.info(f"VoiceBank: Eaither Profile list or voice list search list are empty")
+        logger.info(f"VoiceBank: Either Profile list or voice list search list are empty")
         results = []
     else:
         for profile in profile_list_results:
@@ -172,4 +168,3 @@ def search(language, gender, slang, age, scope=None):
                     results.append(result)
 
     return { "results" : results }
-
