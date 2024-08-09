@@ -7,6 +7,52 @@ app_email = "vigneshkannan255@gmail.com"
 app_license = "cc0-1.0"
 # required_apps = []
 
+
+import frappe
+
+from .voicebank_api import voice_data
+
+routes = [
+    {
+        "from_route": "/api/method/voicebank.voicebank_api.voice_data",
+        "to_route": "voicebank.voicebank_api.voice_data",
+        "methods": ["GET"]
+    }
+        
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Includes in <head>
 # ------------------
 
